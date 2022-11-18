@@ -138,7 +138,7 @@ Select first a watch simulator to test the build.
 
 Build it to the watch. (Depending on the game files that were added. Transfer might take from 5-20 min) 
 
-##Adding music to the game (Optional)
+## Adding music to the game (Optional)
 
 Install bchunk from terminal:	
 `brew install bchunk`
