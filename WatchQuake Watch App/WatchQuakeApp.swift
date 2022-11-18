@@ -48,8 +48,7 @@ func OnDataNeeded(avPlayer: AVAudioPlayerNode, avBuffer: AVAudioPCMBuffer, bits:
     }
 }
 
-//var gameMixerVolume = Float(0.5)//Float(0.1)
-var gameMixerVolume = Float(0.25)
+var gameMixerVolume = Float(0.1)//Float(0.25)
 
 // https://stackoverflow.com/questions/57696436/swiftui-get-screen-size-in-multiplatform
 class SGConvenience{
