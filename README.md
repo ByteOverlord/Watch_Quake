@@ -141,6 +141,7 @@ Build it to the watch. (Depending on the game files that were added. Transfer mi
 ## Adding music to the game (Optional)
 
 Install bchunk from terminal:	
+
 `brew install bchunk`
 
 
