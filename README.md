@@ -17,7 +17,7 @@ Quake 1 port for Apple Watches that uses software rendering and has mostly worki
 * Background mode support
 * Automatic native resolution on watches  
 
-###Features
+### Features
 
 * PAK0 and PAK1 loading
 * Menu screen
@@ -37,7 +37,7 @@ Quake 1 port for Apple Watches that uses software rendering and has mostly worki
 ![Controls](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/In_Game_Controls.png)
 
 
-###Known issues
+### Known issues
 
 * Audio will not transmit through Bluetooth
 * Audio stutters occasionally
@@ -46,7 +46,7 @@ Quake 1 port for Apple Watches that uses software rendering and has mostly worki
 * Sound does not playback on app start (Put the game to the dock and open it from there again.)
 * App does not start anymore (Build the app to the watch from Xcode. Force quit the app on the watch while Xcode is still running. Close Xcode and disconnect the iPhone from the computer. Start the app from the watch) 
 
-##Building Requirements
+## Building Requirements
 
 * Apple Watch Series 5 or later with watchOS 9.1 or later
 * iPhone 8 or later with iOS 16 or later
@@ -57,7 +57,7 @@ Quake 1 port for Apple Watches that uses software rendering and has mostly worki
 * Audacity (only for music)
 
 
-##Building the Watch Quake
+## Building the Watch Quake
 
 
 Install Xcode through Apple AppStore and install command-line tools when Xcode asks for it.
@@ -173,7 +173,7 @@ Place the exported audio files (track02 - track11.wav) inside the Watch Quake pr
 
 From Xcode build the Watch_Quake to the watch. (Transfer might take from 5-20 min)
 
-##Credits
+## Credits
 
 quake\_watch <https://github.com/MyOwnClone/quake_watch>  
 vkquake (Underwater sound filter. snd_dma init) <https://github.com/Novum/vkQuake>  
@@ -184,5 +184,5 @@ Quake source code by Id Software. <https://github.com/id-Software/Quake>
 App icon, documentation and video by IdeaVoid
 
 
-##License
+## License
 This software is released under the terms of the GNU General Public License v2.
