@@ -10,11 +10,10 @@ Quake 1 port for Apple Watches that uses software rendering and has mostly worki
 **Changes by ByteOverlord**
 
 * Save and load game on watchOS
-* CD audio (Music playback support)
+* Music playback ("cd" audio)
 * Camera look and tweaked controls
 * Autosaving options
 * Map quick select and cheats screens
-* Background mode support
 * Automatic native resolution on watches  
 
 ### Features
