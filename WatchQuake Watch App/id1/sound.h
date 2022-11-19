@@ -57,22 +57,23 @@ typedef struct
 
 extern underwater_t underwater;
 
+// !!! if this is changed, it much be changed in asm_i386.h too !!!
+typedef struct
+{
+    int     length;
+    int     loopstart;
+    int     speed;
+    int     width;
+    int     stereo;
+    byte    data[1];        // variable sized
+} sfxcache_t;
+
 typedef struct sfx_s
 {
 	char 	name[MAX_QPATH];
 	cache_user_t	cache;
+    sfxcache_t* cacheForMixer;
 } sfx_t;
-
-// !!! if this is changed, it much be changed in asm_i386.h too !!!
-typedef struct
-{
-	int 	length;
-	int 	loopstart;
-	int 	speed;
-	int 	width;
-	int 	stereo;
-	byte	data[1];		// variable sized
-} sfxcache_t;
 
 typedef struct
 {

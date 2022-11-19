@@ -561,6 +561,7 @@ void S_StopAllSounds(qboolean clear)
 {
 	int		i;
 
+    //printf("S_StopAllSounds\n");
     if (!snd_initialized)
         return;
 
@@ -787,6 +788,9 @@ S_Update
 Called once each time through the main loop
 ============
 */
+
+void S_TempFixCache(void);
+
 void S_Update(vec3_t origin, vec3_t forward, vec3_t right, vec3_t up)
 {
 	int			i, j;
@@ -855,6 +859,9 @@ void S_Update(vec3_t origin, vec3_t forward, vec3_t right, vec3_t up)
 		
 		
 	}
+    // todo
+    // proper fix for mixer loop calling (S_LoadSound -> Cache_Check -> Cache_UnlinkLRU)
+    S_TempFixCache();
 
 //
 // debugging output
@@ -878,6 +885,23 @@ void S_Update(vec3_t origin, vec3_t forward, vec3_t right, vec3_t up)
 unlock_mutex:
     SND_UNLOCK
     return;
+}
+
+// todo
+// implement threadsafe sfx cache for mixer
+void S_TempFixCache(void)
+{
+    channel_t *ch;
+    //sfxcache_t *sc;
+    ch = channels;
+    for (int i=0; i<total_channels ; i++, ch++)
+    {
+        if (!ch->sfx)
+            continue;
+        if (!ch->leftvol && !ch->rightvol)
+            continue;
+        S_LoadSound (ch->sfx);
+    }
 }
 
 void GetSoundtime(void)

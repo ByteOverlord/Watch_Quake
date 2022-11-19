@@ -425,7 +425,7 @@ void S_PaintChannels(int endtime)
 				continue;
 			if (!ch->leftvol && !ch->rightvol)
 				continue;
-			sc = S_LoadSound (ch->sfx);
+            sc = ch->sfx->cacheForMixer;//S_LoadSound (ch->sfx);
 			if (!sc)
 				continue;
 

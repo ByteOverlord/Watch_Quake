@@ -157,7 +157,16 @@ void* WQAudioMixerLoop(void* p)
                         continue;
                     if (!ch->leftvol && !ch->rightvol)
                         continue;
-                    sc = S_LoadSound (ch->sfx);
+                    // todo
+                    //
+                    // implement threadsafe sfx cache for mixer
+                    //
+                    // temporary fix
+                    sc = ch->sfx->cacheForMixer;// will fail eventually when Cache_Alloc calls Cache_Free ( cache_head.lru_prev->user )
+                    //
+                    // S_LoadSound(ch->sfx) calls Cache_Check(sfx->cache) -> Cache_UnlinkLRU (cs) Cache_MakeLRU (cs)
+                    //
+                    //S_LoadSound (ch->sfx);// this is a bad idea!
                     if (!sc)
                         continue;
 

@@ -108,6 +108,7 @@ sfxcache_t *S_LoadSound (sfx_t *s)
 
 // see if still in memory
 	sc = Cache_Check (&s->cache);
+    s->cacheForMixer = sc;// temporary fix
 	if (sc)
 		return sc;
 
@@ -115,6 +116,8 @@ sfxcache_t *S_LoadSound (sfx_t *s)
 // load it in
     Q_strcpy(namebuffer, "sound/");
     Q_strcat(namebuffer, s->name);
+
+    //printf("S_LoadSound: %s\n",namebuffer);
 
 //	Con_Printf ("loading %s\n",namebuffer);
 
@@ -139,6 +142,7 @@ sfxcache_t *S_LoadSound (sfx_t *s)
 	len = len * info.width * info.channels;
 
 	sc = Cache_Alloc ( &s->cache, len + sizeof(sfxcache_t), s->name);
+    s->cacheForMixer = sc;// temporary fix
 	if (!sc)
 		return NULL;
 	
