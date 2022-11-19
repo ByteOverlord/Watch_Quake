@@ -6,6 +6,15 @@ Quake 1 port for Apple Watches that uses software rendering and has mostly worki
 <https://www.youtube.com/watch?v=89TAt72eYt4> (Series 5 gameplay video)
 
  This port started from the original Quake Watch port by Tomas "MyOwnClone" Vymazal.
+ 
+Complete game with optional music takes 97,9 MB on the watch.
+
+```
+PAK0.PAK is 18,7 MB
+PAK1.PAK is 34,3 MB
+Music Tracks are 39,3 MB (converted with Audacity (22050 Hz, WAV, IMA ADPCM))
+
+```
 
 **Changes by ByteOverlord**
 
@@ -41,6 +50,7 @@ Quake 1 port for Apple Watches that uses software rendering and has mostly worki
 * Audio will not transmit through Bluetooth
 * Audio stutters occasionally
 * Camera rotates suddenly on some occasions
+* Smooth animation on, torches flicker on the edges of the view
 * R_AliasDrawModel trivial_accept disabled (Incorrect bounding box?)
 * Sound does not playback on app start (Put the game to the dock and open it from there again.)
 * App does not start anymore (Build the app to the watch from Xcode. Force quit the app on the watch while Xcode is still running. Close Xcode and disconnect the iPhone from the computer. Start the app from the watch) 
@@ -58,6 +68,21 @@ Quake 1 port for Apple Watches that uses software rendering and has mostly worki
 
 ## Building the Watch Quake
 
+Set the iPhone and Apple Watch in to "Developer" mode.
+
+On iPhone:
+`Settings -> Privacy & Security -> Developer Mode (SECURITY) -> Developer Mode`
+
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_A.png)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_B.png)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_C.png)
+
+On Apple Watch:
+`Settings -> Privacy & Security -> Developer Mode (SECURITY) -> Developer Mode`
+
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_D.png)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_E.png)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_F.png)
 
 Install Xcode through Apple AppStore and install command-line tools when Xcode asks for it.
 
@@ -67,8 +92,8 @@ Install Xcode through Apple AppStore and install command-line tools when Xcode a
 
  Get Quake through gog.com (if you just want to use the shareware jump to “Copy PAK...” and only use the shareware’s PAK0.PAK)
 
- From Quake’s “View Downloads” download the Windows “offline backup game installer”
-
+ Download the quake installer from your gog.com profile:
+`"gog.com Profile" -> Games -> Quake -> View Downloads -> Download Offline Backup Game Installers -> Quake`
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_01.png) ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_02.png)
 
@@ -85,7 +110,8 @@ brew install innoextract
  In terminal extract the Quake game files with innoextract:   
 `innoextract “downloaded setup_quake_the_offering_2.0.0.6.exe file location”`
 
- (innoextract will extract it to an “app” folder in current working directory.) 
+ (innoextract will extract an “app” and "tmp" folders in current working directory.)	
+"app" folder has the needed PAK files and optional audio.
 
  Copy PAK0.PAK and PAK1.PAK files to WatchQuake project (PAK names have to be uppercase (case sensitive)):   
 `/WatchQuake Watch App/Resources/id1/`
@@ -94,11 +120,17 @@ brew install innoextract
 Open the GitHub WatchQuake Xcode project.
 
  
-In WatchQuake project file go to “Targets” and for the “WatchQuake” select your own “Team” and write a unique “Bundle Identifier” in “Signing & Capabilities”.
+In WatchQuake project file go to:		
+`WatchQuake -> Targets -> WatchQuake -> Signing & Capabilities`
+
+Select your "Team" and write a unique “Bundle Identifier”.
 
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_03.png)
- Then select the “WatchQuake Watch App” in “Targets” and select the same “Team” as in “WatchQuake” and the “Bundle Identifier” Should be the same as in “WatchQuake” target with “.watchkitapp” added at the end.
+ Then in WatchQuake project file go to:		
+`WatchQuake -> Targets -> WatchQuake Watch App -> Signing & Capabilities`
+
+Select your "Team" and use the same “Bundle Identifier” as previously but with “.watchkitapp” added at the end.
 
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_04.png)
@@ -108,7 +140,11 @@ In WatchQuake project file go to “Targets” and for the “WatchQuake” sele
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_05A.png)
 	
-Goto “Targets” -> “WatchQuake Watch App” -> “Build Phases” and in “Link Binary With Libraries” add:
+In WatchQuake project file go to:		
+`WatchQuake -> Targets -> WatchQuake -> Build Phases -> Link Binary With Libraries`
+
+
+Add these frameworks:
 
 ```
 AVFoundation.framework
@@ -128,7 +164,11 @@ UIKit.framework
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_06.png)
 
 
-Select first a watch simulator to test the build.
+Test the build first with a simulator (Series 5 Simulator or up (watchOS Simulator))
+
+
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_06A.png)
+
 
   After testing connect iPhone to the Mac and make sure Apple Watch is connected to it. Select the Apple Watch as target.
 
