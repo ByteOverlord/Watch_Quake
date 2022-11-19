@@ -5,15 +5,14 @@ Quake 1 port for Apple Watches that uses software rendering and has mostly worki
 
 <https://www.youtube.com/watch?v=89TAt72eYt4> (Series 5 gameplay video)
 
- This port started from the original Quake Watch port by Tomas "MyOwnClone" Vymazal.
+This port started from the original Quake Watch port by Tomas "MyOwnClone" Vymazal.
  
 Complete game with optional music takes 97,9 MB on the watch.
 
 ```
 PAK0.PAK is 18,7 MB
 PAK1.PAK is 34,3 MB
-Music Tracks are 39,3 MB (converted with Audacity (22050 Hz, WAV, IMA ADPCM))
-
+Music Tracks are 39,3 MB (converted with Audacity (Mono, 22050 Hz, WAV, IMA ADPCM))
 ```
 
 **Changes by ByteOverlord**
@@ -23,7 +22,7 @@ Music Tracks are 39,3 MB (converted with Audacity (22050 Hz, WAV, IMA ADPCM))
 * Camera look and tweaked controls
 * Autosaving options
 * Map quick select and cheats screens
-* Automatic native resolution on watches  
+* Automatic native resolution on watches
 
 ### Features
 
@@ -53,7 +52,7 @@ Music Tracks are 39,3 MB (converted with Audacity (22050 Hz, WAV, IMA ADPCM))
 * Smooth animation on, torches flicker on the edges of the view
 * R_AliasDrawModel trivial_accept disabled (Incorrect bounding box?)
 * Sound does not playback on app start (Put the game to the dock and open it from there again.)
-* App does not start anymore (Build the app to the watch from Xcode. Force quit the app on the watch while Xcode is still running. Close Xcode and disconnect the iPhone from the computer. Start the app from the watch) 
+* App does not start anymore (Build the app to the watch from Xcode. Force quit the app on the watch while Xcode is still running. Close Xcode and disconnect the iPhone from the computer. Start the app from the watch)
 
 ## Building Requirements
 
@@ -86,40 +85,40 @@ On Apple Watch:
 
 Install Xcode through Apple AppStore and install command-line tools when Xcode asks for it.
 
-  Download the Watch Quake from GitHub. (<https://github.com/ByteOverlord/Watch_Quake>)
+Download the Watch Quake from GitHub. (<https://github.com/ByteOverlord/Watch_Quake>)
 
- ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00.png)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00.png)
 
- Get Quake through gog.com (if you just want to use the shareware jump to “Copy PAK...” and only use the shareware’s PAK0.PAK)
+Get Quake through gog.com (if you just want to use the shareware jump to “Copy PAK...” and only use the shareware’s PAK0.PAK)
 
- Download the quake installer from your gog.com profile:  
+Download the quake installer from your gog.com profile:  
  `"gog.com Profile" -> Games -> Quake -> View Downloads -> Download Offline Backup Game Installers -> Quake`
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_01.png) ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_02.png)
 
- Install Homebrew from terminal:   
+Install Homebrew from terminal:   
 `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/homebrew/go/install)"`
 	
- Install innoextract from Homebrew:
+Install innoextract from Homebrew:
 
 ```
 brew update
 brew install innoextract
 ```
 
- In terminal extract the Quake game files with innoextract:   
+In terminal extract the Quake game files with innoextract:   
 `innoextract “downloaded setup_quake_the_offering_2.0.0.6.exe file location”`
 
- (innoextract will extract an “app” and "tmp" folders in current working directory.)	
+(innoextract will extract an “app” and "tmp" folders in current working directory.)	
 "app" folder has the needed PAK files and optional audio.
 
- Copy PAK0.PAK and PAK1.PAK files to WatchQuake project (PAK names have to be uppercase (case sensitive)):   
+Copy PAK0.PAK and PAK1.PAK files to WatchQuake project (PAK names have to be uppercase (case sensitive)):   
 `/WatchQuake Watch App/Resources/id1/`
 
 
 Open the GitHub WatchQuake Xcode project.
 
- 
+
 In WatchQuake project file go to:  
 `WatchQuake -> Targets -> WatchQuake -> Signing & Capabilities`
 
@@ -127,7 +126,7 @@ Select your "Team" and write a unique “Bundle Identifier”.
 
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_03.png)
- Then in WatchQuake project file go to:  
+Then in WatchQuake project file go to:  
  `WatchQuake -> Targets -> WatchQuake Watch App -> Signing & Capabilities`
 
 Select your "Team" and use the same “Bundle Identifier” as previously but with “.watchkitapp” added at the end.
@@ -135,7 +134,7 @@ Select your "Team" and use the same “Bundle Identifier” as previously but wi
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_04.png)
 
-  If the project “Frameworks” folder shows the framework texts in red:
+If the project “Frameworks” folder shows the framework texts in red:
 
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_05A.png)
@@ -156,9 +155,9 @@ UIKit.framework
 
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_05B.png)
- And after adding them delete the frameworks with red text.
+And after adding them delete the frameworks with red text.
 
-  Check that the project is on release setting.
+Check that the project is on release setting.
 
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_06.png)
@@ -170,7 +169,7 @@ Test the build first with a simulator (Series 5 Simulator or up (watchOS Simulat
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_06A.png)
 
 
-  After testing connect iPhone to the Mac and make sure Apple Watch is connected to it. Select the Apple Watch as target.
+After testing connect iPhone to the Mac and make sure Apple Watch is connected to it. Select the Apple Watch as target.
 
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_07.png)
@@ -190,10 +189,13 @@ Extract game music from the gog game files:
 (Music tracks will extract in to current working directory (track02 - track11.wav).)
 
 
-Open Audacity and drag the tracks in it. Edit tracks one by one by selecting one and from the “Tracks” -> “Mix” apply “Mix Stereo Down to Mono” (recommended “Project Rate (Hz)” is 22050).
+Open Audacity and drag the tracks to it. Edit the tracks one by one to Mono.  
+`Tracks -> Mix -> Mix Stereo Down to Mono`
 
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Music_Install_Guide_00.png)
+
+Set the “Project Rate (Hz)” to 22050.
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Music_Install_Guide_01.png)
 
