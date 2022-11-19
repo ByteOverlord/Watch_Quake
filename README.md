@@ -24,7 +24,7 @@ Music Tracks are 39,3 MB (converted with Audacity (Mono, 22050 Hz, WAV, IMA ADPC
 * Map quick select and cheats screens
 * Automatic native resolution on watches
 
-### Features
+## Features
 
 * PAK0 and PAK1 loading
 * Menu screen
@@ -43,8 +43,11 @@ Music Tracks are 39,3 MB (converted with Audacity (Mono, 22050 Hz, WAV, IMA ADPC
 
 ![Controls](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/In_Game_Controls.png)
 
+## Changelog
 
-### Known issues
+* **<em>HOTFIX! Fixed possible crash with audio cache / 19.11.2022</em>**
+
+## Known issues
 
 * Audio will not transmit through Bluetooth
 * Audio stutters occasionally
