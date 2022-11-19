@@ -73,14 +73,18 @@ On iPhone:
 `Settings -> Privacy & Security -> Developer Mode (SECURITY) -> Developer Mode`
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_A.png)
+  
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_B.png)
+  
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_C.png)
 
 On Apple Watch:  
 `Settings -> Privacy & Security -> Developer Mode (SECURITY) -> Developer Mode`
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_D.png)
+  
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_E.png)
+  
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_F.png)
 
 Install Xcode through Apple AppStore and install command-line tools when Xcode asks for it.
@@ -94,7 +98,9 @@ Get Quake through gog.com (if you just want to use the shareware jump to “Copy
 Download the quake installer from your gog.com profile:  
  `"gog.com Profile" -> Games -> Quake -> View Downloads -> Download Offline Backup Game Installers -> Quake`
 
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_01.png) ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_02.png)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_01.png)
+  
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_02.png)
 
 Install Homebrew from terminal:   
 `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/homebrew/go/install)"`
@@ -204,7 +210,7 @@ Export tracks with “Export Multiple” in “WAV” format with “IMA ADPCM�
 
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Music_Install_Guide_02.png)
-
+  
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Music_Install_Guide_03.png)
 
 
