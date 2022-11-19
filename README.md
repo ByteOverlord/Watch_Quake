@@ -70,14 +70,14 @@ Music Tracks are 39,3 MB (converted with Audacity (22050 Hz, WAV, IMA ADPCM))
 
 Set the iPhone and Apple Watch in to "Developer" mode.
 
-On iPhone:
+On iPhone:  
 `Settings -> Privacy & Security -> Developer Mode (SECURITY) -> Developer Mode`
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_A.png)
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_B.png)
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_C.png)
 
-On Apple Watch:
+On Apple Watch:  
 `Settings -> Privacy & Security -> Developer Mode (SECURITY) -> Developer Mode`
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_D.png)
@@ -92,8 +92,8 @@ Install Xcode through Apple AppStore and install command-line tools when Xcode a
 
  Get Quake through gog.com (if you just want to use the shareware jump to “Copy PAK...” and only use the shareware’s PAK0.PAK)
 
- Download the quake installer from your gog.com profile:
-`"gog.com Profile" -> Games -> Quake -> View Downloads -> Download Offline Backup Game Installers -> Quake`
+ Download the quake installer from your gog.com profile:  
+ `"gog.com Profile" -> Games -> Quake -> View Downloads -> Download Offline Backup Game Installers -> Quake`
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_01.png) ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_02.png)
 
@@ -120,15 +120,15 @@ brew install innoextract
 Open the GitHub WatchQuake Xcode project.
 
  
-In WatchQuake project file go to:		
+In WatchQuake project file go to:  
 `WatchQuake -> Targets -> WatchQuake -> Signing & Capabilities`
 
 Select your "Team" and write a unique “Bundle Identifier”.
 
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_03.png)
- Then in WatchQuake project file go to:		
-`WatchQuake -> Targets -> WatchQuake Watch App -> Signing & Capabilities`
+ Then in WatchQuake project file go to:  
+ `WatchQuake -> Targets -> WatchQuake Watch App -> Signing & Capabilities`
 
 Select your "Team" and use the same “Bundle Identifier” as previously but with “.watchkitapp” added at the end.
 
@@ -140,7 +140,7 @@ Select your "Team" and use the same “Bundle Identifier” as previously but wi
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_05A.png)
 	
-In WatchQuake project file go to:		
+In WatchQuake project file go to:  
 `WatchQuake -> Targets -> WatchQuake -> Build Phases -> Link Binary With Libraries`
 
 
@@ -179,7 +179,7 @@ Build it to the watch. (Depending on the game files that were added. Transfer mi
 
 ## Adding music to the game (Optional)
 
-Install bchunk from terminal:	
+Install bchunk from terminal:  
 `brew install bchunk`
 
 
