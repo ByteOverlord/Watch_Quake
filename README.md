@@ -1,4 +1,4 @@
-![Logo](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Watch_Quake_Logo_00.png)
+![Logo](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Watch_Quake_Logo_01.png)
 18.11.2022
 
 Watch_Quake is a Quake 1 port for Apple Watches that uses software rendering and has mostly working audio playback. Runs shareware and registered versions of the game with optional “cd” audio.
