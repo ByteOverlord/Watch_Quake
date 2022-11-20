@@ -15,6 +15,8 @@ PAK1.PAK is 34,3 MB
 Music Tracks are 39,3 MB (converted with Audacity (Mono, 22050 Hz, WAV, IMA ADPCM))
 ```
 
+![Photo](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/WQ_Photo_2.jpg)
+
 **Changes by ByteOverlord**
 
 * Sound Mixer separated to a second thread from the drawing pipeline to give the Mixer more time for processing.
@@ -25,6 +27,8 @@ Music Tracks are 39,3 MB (converted with Audacity (Mono, 22050 Hz, WAV, IMA ADPC
 * Cheats menu added with toggles that stay active in level changes.
 * Saves game config (Options) and save games (.sav) in “Application Support” folder. Game config saves automatically when the app goes to background.
 * Resolution setting is automatic with hud, menu and console notification placements affected by resolution.
+
+![Photo](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/WQ_Photo_3.jpg)
 
 ## Features
 
@@ -69,7 +73,7 @@ Music Tracks are 39,3 MB (converted with Audacity (Mono, 22050 Hz, WAV, IMA ADPC
 * Audacity (only for music)
 
 
-## Building the Watch Quake
+## Building the Watch_Quake
 
 Set the iPhone and Apple Watch in to "Developer" mode.
 
@@ -225,6 +229,8 @@ Place the exported audio files (track02 - track11.wav) inside the Watch Quake pr
 
 
 From Xcode build the Watch_Quake to the watch. (Transfer might take from 5-20 min)
+
+![Photo](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/WQ_Photo_1.jpg)
 
 ## Credits
 
