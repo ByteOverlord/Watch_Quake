@@ -1,7 +1,7 @@
 ![Logo](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Watch_Quake_Logo_00.png)
 18.11.2022
 
-Quake 1 port for Apple Watches that uses software rendering and has mostly working audio playback. Runs shareware and registered versions of the game with optional “cd” audio.
+Watch_Quake is a Quake 1 port for Apple Watches that uses software rendering and has mostly working audio playback. Runs shareware and registered versions of the game with optional “cd” audio.
 
 <https://www.youtube.com/watch?v=89TAt72eYt4> (Series 5 gameplay video)
 
@@ -17,27 +17,28 @@ Music Tracks are 39,3 MB (converted with Audacity (Mono, 22050 Hz, WAV, IMA ADPC
 
 **Changes by ByteOverlord**
 
-* Save and load game on watchOS
-* Music playback ("cd" audio)
-* Camera look and tweaked controls
-* Autosaving options
-* Map quick select and cheats screens
-* Automatic native resolution on watches
+* Sound Mixer separated to a second thread from the drawing pipeline to give the Mixer more time for processing.
+* “cd” audio support added. Audio file format “Mono, 22050 Hz, WAV, IMA ADPCM” preferred for lower processing and minimal space required.
+* Timer changed from “ns_timer” to “dispatch_source” (Possibly more accurate).
+* Main menu custom texts are drawn on the fly from the original texture so no extra textures needed (Maps, Cheats).
+* Maps menu added with custom level screenshots and selectable difficulty.
+* Cheats menu added with toggles that stay active in level changes.
+* Saves game config (Options) and save games (.sav) in “Application Support” folder. Game config saves automatically when the app goes to background.
+* Resolution setting is automatic with hud, menu and console notification placements affected by resolution.
 
 ## Features
 
 * PAK0 and PAK1 loading
 * Menu screen
-* Save and load game support
+* Save and load game
 * Autosaving options
 * Map quick select screen
 * Cheat activation screen
 * Tweaked controls for watch interface
-* Config.cfg with settings saving support
 * Underwater audio effect
-* Position and animation interpolation support
-* Music playback (tracks have to be converted to a specific WAV format)
-* Automatic native resolution on watch models (Series 5 40mm -> Ultra)
+* Position and animation interpolation
+* Music playback
+* Automatic native resolution (Series 5 40mm -> Ultra)
 
 ![Controls](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Menu_Controls.png)
 
@@ -45,7 +46,7 @@ Music Tracks are 39,3 MB (converted with Audacity (Mono, 22050 Hz, WAV, IMA ADPC
 
 ## Changelog
 
-* **<em>HOTFIX! Fixed possible crash with audio cache / 19.11.2022</em>**
+* **<em>SOUNDFIX! Fixed possible crash with audio cache / 19.11.2022</em>**
 
 ## Known issues
 
