@@ -64,7 +64,7 @@ We where intrigued by MyOwnClone’s quake_watch port and saw the potential of t
 
 ## Game size 
  
-Complete game with optional music takes 97,9 MB on the watch.
+Complete game with optional music takes ~ 99,4 MB on the watch.
 
 ```
 PAK0.PAK is 18,7 MB
