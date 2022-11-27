@@ -75,7 +75,7 @@ Music Tracks are 39,3 MB (converted with Audacity (Mono, 22050 Hz, WAV, IMA ADPC
 
 ## Benchmark
 
-#### Performance table:  
+#### Reference table:  
 
 Good  | Moderate  | Bad
 ------------- | ------------- |-------------
