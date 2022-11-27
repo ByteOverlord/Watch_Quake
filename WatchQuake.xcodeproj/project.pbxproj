@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		6A284192290E750100E0BEA6 /* WatchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A284191290E750100E0BEA6 /* WatchKit.framework */; };
 		6A3BC6A2290EB96E00A725D5 /* TouchEventModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3BC6A1290EB96E00A725D5 /* TouchEventModifier.swift */; };
+		6A3E44EF292B7F6F00E73677 /* DefragAllocator.c in Sources */ = {isa = PBXBuildFile; fileRef = 6A3E44EE292B7F6F00E73677 /* DefragAllocator.c */; };
 		6A47665D290D1A5C00CA9421 /* WatchQuake Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 6A47665C290D1A5C00CA9421 /* WatchQuake Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		6A476662290D1A5C00CA9421 /* WatchQuakeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A476661290D1A5C00CA9421 /* WatchQuakeApp.swift */; };
 		6A476664290D1A5C00CA9421 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A476663290D1A5C00CA9421 /* ContentView.swift */; };
@@ -127,6 +128,8 @@
 /* Begin PBXFileReference section */
 		6A284191290E750100E0BEA6 /* WatchKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WatchKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS9.0.sdk/System/Library/Frameworks/WatchKit.framework; sourceTree = DEVELOPER_DIR; };
 		6A3BC6A1290EB96E00A725D5 /* TouchEventModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchEventModifier.swift; sourceTree = "<group>"; };
+		6A3E44ED292B7F6F00E73677 /* DefragAllocator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DefragAllocator.h; sourceTree = "<group>"; };
+		6A3E44EE292B7F6F00E73677 /* DefragAllocator.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = DefragAllocator.c; sourceTree = "<group>"; };
 		6A476656290D1A5C00CA9421 /* WatchQuake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WatchQuake.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A47665C290D1A5C00CA9421 /* WatchQuake Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WatchQuake Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A476661290D1A5C00CA9421 /* WatchQuakeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchQuakeApp.swift; sourceTree = "<group>"; };
@@ -353,6 +356,8 @@
 				6A476740290D24E300CA9421 /* WQSoundCallback.h */,
 				6AB5CBCD2915C1900037E2BE /* cd_watch.h */,
 				6AB5CBCE2915C1900037E2BE /* cd_watch.c */,
+				6A3E44ED292B7F6F00E73677 /* DefragAllocator.h */,
+				6A3E44EE292B7F6F00E73677 /* DefragAllocator.c */,
 			);
 			path = WQuake;
 			sourceTree = "<group>";
@@ -626,6 +631,7 @@
 				6A476705290D20BD00CA9421 /* snd_mix.c in Sources */,
 				6A47674B290D2E7F00CA9421 /* sys_watch.c in Sources */,
 				6A476735290D20BD00CA9421 /* mathlib.c in Sources */,
+				6A3E44EF292B7F6F00E73677 /* DefragAllocator.c in Sources */,
 				6A476727290D20BD00CA9421 /* host_cmd.c in Sources */,
 				6A476720290D20BD00CA9421 /* cl_main.c in Sources */,
 				6A476664290D1A5C00CA9421 /* ContentView.swift in Sources */,
