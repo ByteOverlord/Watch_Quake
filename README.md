@@ -142,7 +142,6 @@ Benchmarks are only indicative.
 ## Known issues
 
 * Audio will not transmit through Bluetooth
-* Audio stutters occasionally
 * Camera rotates suddenly on some occasions
 * Smooth animation on, torches flicker on the edges of the view
 * R_AliasDrawModel trivial_accept disabled (Incorrect bounding box?)
