@@ -688,6 +688,7 @@ void _Host_FrameBeforeRender(float time)
     {
         CL_ReadFromServer ();
     }
+    S_BatchProcessingCheck();
 }
 
 void Host_FrameBeforeRender(float time)

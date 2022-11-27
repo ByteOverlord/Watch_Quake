@@ -21,6 +21,51 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 
+#include "DefragAllocator.h"
+
+DefragCache_t soundfx_cache;
+
+void Defrag_Relocate_sfxcache(void* ptr, uintptr_t lowerBound, uintptr_t upperBound, ptrdiff_t offset)
+{
+    // sfxcache_t* cache = ptr;
+    //
+    // this is fine
+    // no need to manually offset cache->data
+}
+
+void S_InitSoundFXMemory(u32 maxSfx, u32 sampleRate)
+{
+    // DefragAllocator is not really designed for allocations larger than 1-16 KB
+    //
+    // sfxcache sizes range from 1 KB to 300 KB at 48,000 Hz!
+    //
+    int stressTest = 0;
+    u32 cacheSize = 4 * 1024 * 1024;
+    u32 cachePurge = 512 * 1024;
+    if (stressTest)
+    {
+        cacheSize /= 2;
+        cachePurge /= 2;
+    }
+    u32 cacheMultiplier;
+    if (sampleRate <= 22050)
+    {
+        cacheMultiplier = 1;
+    }
+    else if (sampleRate <= 48000)
+    {
+        cacheMultiplier = 2;
+    }
+    else // 96000
+    {
+        cacheMultiplier = 4;
+    }
+    cacheSize *= cacheMultiplier;
+    cachePurge *= cacheMultiplier;
+    DefragCache_Init(&soundfx_cache,cacheSize,cachePurge,maxSfx * 2);
+    DefragAllocator_SetRelocateFunction(&soundfx_cache.mem,DEFRAG_TYPE_SFXCACHE,&Defrag_Relocate_sfxcache);
+}
+
 int			cache_full_cycle;
 
 byte *S_Alloc (int size);
@@ -39,7 +84,8 @@ void ResampleSfx (sfx_t *sfx, int inrate, int inwidth, byte *data)
 	int		sample, samplefrac, fracstep;
 	sfxcache_t	*sc;
 	
-	sc = Cache_Check (&sfx->cache);
+	//sc = Cache_Check (&sfx->cache);
+    sc = DefragCache_GetPointer(&soundfx_cache,sfx->cacheHandle,DEFRAG_TYPE_SFXCACHE);
 	if (!sc)
 		return;
 
@@ -107,15 +153,15 @@ sfxcache_t *S_LoadSound (sfx_t *s)
 	byte	stackbuf[1*1024];		// avoid dirtying the cache heap
 
 // see if still in memory
-	sc = Cache_Check (&s->cache);
-    s->cacheForMixer = sc;// temporary fix
+	//sc = Cache_Check (&s->cache);
+    sc = DefragCache_GetPointer(&soundfx_cache,s->cacheHandle,DEFRAG_TYPE_SFXCACHE);
 	if (sc)
 		return sc;
 
 //Con_Printf ("S_LoadSound: %x\n", (int)stackbuf);
 // load it in
     Q_strcpy(namebuffer, "sound/");
-    Q_strcat(namebuffer, s->name);
+    Q_strcat(namebuffer, s->namePtr);
 
     //printf("S_LoadSound: %s\n",namebuffer);
 
@@ -129,10 +175,10 @@ sfxcache_t *S_LoadSound (sfx_t *s)
 		return NULL;
 	}
 
-	info = GetWavinfo (s->name, data, com_filesize);
+	info = GetWavinfo (s->namePtr, data, com_filesize);
 	if (info.channels != 1)
 	{
-		Con_Printf ("%s is a stereo sample\n",s->name);
+		Con_Printf ("%s is a stereo sample\n",s->namePtr);
 		return NULL;
 	}
 
@@ -141,10 +187,15 @@ sfxcache_t *S_LoadSound (sfx_t *s)
 
 	len = len * info.width * info.channels;
 
-	sc = Cache_Alloc ( &s->cache, len + sizeof(sfxcache_t), s->name);
-    s->cacheForMixer = sc;// temporary fix
+    //printf("%lu bytes\n",len + sizeof(sfxcache_t));
+    //sc = Cache_Alloc ( &s->cache, len + sizeof(sfxcache_t), s->name);
+    s->cacheHandle = DefragCache_Allocate(&soundfx_cache,len + sizeof(sfxcache_t),DEFRAG_TYPE_SFXCACHE,16);
+    sc = DefragCache_GetPointer(&soundfx_cache,s->cacheHandle,DEFRAG_TYPE_SFXCACHE);
 	if (!sc)
-		return NULL;
+    {
+        s->cacheHandle = 0;
+        return NULL;
+    }
 	
 	sc->length = info.samples;
 	sc->loopstart = info.loopstart;

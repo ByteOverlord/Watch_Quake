@@ -11,11 +11,13 @@ import UIKit
 class Model : ObservableObject {
     @Published var mapTxt : String!
     @Published var txt = String("")
+    @Published var benchmarkTxt = String("")
     @Published var img : CGImage!
     init() {
         mapTxt = nil
         img = nil
-        txt = String(cString: WQGetStatsString())
+        txt = String("")
+        benchmarkTxt = String("")
     }
 }
 
@@ -24,6 +26,7 @@ let myModel = Model()
 @_cdecl("refresh_screen")
 func refreshScreen(ptr: UnsafeRawPointer) -> () {
     myModel.img = WQCreateGameImage()!.takeRetainedValue()
+    myModel.benchmarkTxt = String(cString: WQGetBenchmarkString())
     if (WQShowFPS() != 0)
     {
         myModel.txt = String(cString: WQGetStatsString())
@@ -52,7 +55,8 @@ struct ImageOverlay: View {
     }
     var body: some View {
         // stuttering audio when text is visible for the first time?
-        Text(model.txt).font(.system(size: 6)).fixedSize()
+        Text(model.txt).font(.system(size: 6)).fixedSize().padding(Edge.Set(Edge.top), Double(-8.0))
+        Text(model.benchmarkTxt).font(.system(size: 6)).fixedSize().padding(Edge.Set(Edge.top), Double(8.0))
     }
 }
 

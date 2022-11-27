@@ -45,6 +45,7 @@ void WQFree(void);
 int WQGetFrame(void);
 WQGameStats_t WQGetStats(void);
 const char* WQGetStatsString(void);
+const char* WQGetBenchmarkString(void);
 int WQShowFPS(void);
 
 void WQInputTapAndPan(CGPoint point, int type);

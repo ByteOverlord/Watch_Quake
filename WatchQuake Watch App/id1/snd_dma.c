@@ -36,6 +36,14 @@ void S_Update_(void);
 void S_StopAllSounds(qboolean clear);
 void S_StopAllSoundsC(void);
 
+#define SNDCALL_CACHE_SIZE 8
+
+char* sndname_cache;
+int sndname_cache_size = 0;
+
+sndcall_t sndcall_cache[SNDCALL_CACHE_SIZE];
+int sndcall_cache_size;
+
 // =======================================================================
 // Internal sound data & structures
 // =======================================================================
@@ -218,8 +226,6 @@ void S_Init (void)
 		Con_Printf ("loading all sounds as 8bit\n");
 	}
 
-
-
 	snd_initialized = qTrue;
 
 	S_Startup ();
@@ -231,7 +237,7 @@ void S_Init (void)
 
 // create a piece of DMA memory
 
-	if (fakedma)
+	/*if (fakedma)
 	{
 		shm = (void *) Hunk_AllocName(sizeof(*shm), "shm");
 		//shm->splitbuffer = 0;
@@ -246,12 +252,20 @@ void S_Init (void)
 		//shm->gamealive = qTrue;
 		shm->submission_chunk = 1;
 		shm->buffer = Hunk_AllocName(1<<16, "shmbuf");
-	}
+	}*/
 
     if (shm != NULL)
     {
         Con_Printf ("Sound sampling rate: %i\n", shm->speed);
     }
+
+    S_InitSoundFXMemory(MAX_SFX,shm->speed);
+    memset(sndcall_cache,0,sizeof(sndcall_cache));
+    sndcall_cache_size = 0;
+    
+    sndname_cache = malloc(MAX_SFX * MAX_QPATH);
+    memset(sndname_cache,0,MAX_SFX * MAX_QPATH);
+    sndname_cache_size = 0;
 
 	// provides a tick sound until washed clean
 
@@ -304,23 +318,33 @@ sfx_t *S_FindName (char *name)
 	sfx_t	*sfx;
 
 	if (!name)
-		Sys_Error ("S_FindName: NULL\n");
+        Sys_Error ("S_FindName: NULL\n");
 
 	if (Q_strlen(name) >= MAX_QPATH)
 		Sys_Error ("Sound name too long: %s", name);
 
 // see if already loaded
 	for (i=0 ; i < num_sfx ; i++)
-		if (!Q_strcmp(known_sfx[i].name, name))
-		{
-			return &known_sfx[i];
-		}
+    {
+        if (known_sfx[i].namePtr != NULL && !Q_strcmp(known_sfx[i].namePtr, name))
+        //if (!Q_strcmp(known_sfx[i].name,name))
+        {
+            return &known_sfx[i];
+        }
+    }
 
 	if (num_sfx == MAX_SFX)
 		Sys_Error ("S_FindName: out of sfx_t");
 	
 	sfx = &known_sfx[i];
-	strcpy (sfx->name, name);
+    sfx->namePtr = sndname_cache + sndname_cache_size;
+    size_t strSize = MAX_QPATH;//strlen(name) + 1;
+    //memset(sfx->namePtr,0,strSize);
+    sndname_cache_size += strSize;
+	strcpy (sfx->namePtr, name);
+    //sfx->namePtr[strSize-1] = 0;
+
+    //strcpy(sfx->name,name);
 
 	num_sfx++;
 	
@@ -342,7 +366,11 @@ void S_TouchSound (char *name)
 		return;
 
 	sfx = S_FindName (name);
-	Cache_Check (&sfx->cache);
+    if (sfx)
+    {
+        DefragCache_GetPointer(&soundfx_cache,sfx->cacheHandle,DEFRAG_TYPE_SFXCACHE);
+    }
+	//Cache_Check (&sfx->cache);
 }
 
 /*
@@ -362,7 +390,11 @@ sfx_t *S_PrecacheSound (char *name)
 	
 // cache it in
 	if (precache.value)
-		S_LoadSound (sfx);
+    {
+        SND_LOCK
+        S_LoadSound (sfx);
+        SND_UNLOCK
+    }
 	
 	return sfx;
 }
@@ -474,14 +506,51 @@ void SND_Spatialize(channel_t *ch)
 // Start a sound effect
 // =======================================================================
 
+void S_BatchProcessing(void);
+
 void S_StartSound(int entnum, int entchannel, sfx_t *sfx, vec3_t origin, float fvol, float attenuation)
+{
+    if (sndcall_cache_size >= SNDCALL_CACHE_SIZE)
+    {
+        SND_LOCK
+        S_BatchProcessing();
+        SND_UNLOCK
+    }
+    sndcall_t* call = &sndcall_cache[sndcall_cache_size];
+    sndcall_cache_size++;
+    call->type = SNDCALL_TYPE_PLAY;
+    call->entnum = entnum;
+    call->entchannel = entchannel;
+    call->sfx = sfx;
+    memcpy(call->origin,origin,sizeof(vec3_t));
+    call->fvol = fvol;
+    call->attenuation = attenuation;
+}
+
+void S_StopSound(int entnum, int entchannel)
+{
+    if (sndcall_cache_size >= SNDCALL_CACHE_SIZE)
+    {
+        SND_LOCK
+        S_BatchProcessing();
+        SND_UNLOCK
+    }
+    sndcall_t* call = &sndcall_cache[sndcall_cache_size];
+    sndcall_cache_size++;
+    memset(call,0,sizeof(sndcall_t));
+    call->type = SNDCALL_TYPE_STOP;
+    call->entnum = entnum;
+    call->entchannel = entchannel;
+}
+
+void S_Batch_StartSound(int entnum, int entchannel, sfx_t *sfx, vec3_t origin, float fvol, float attenuation)
 {
 	channel_t *target_chan, *check;
 	sfxcache_t	*sc;
 	int		ch_idx;
 	int		skip;
 
-    SND_LOCK
+    //SND_LOCK
 	if (!sound_started || !sfx || nosound.value)
         goto unlock_mutex;
 
@@ -533,15 +602,15 @@ void S_StartSound(int entnum, int entchannel, sfx_t *sfx, vec3_t origin, float f
 		
 	}
 unlock_mutex:
-    SND_UNLOCK
+    //SND_UNLOCK
     return;
 }
 
-void S_StopSound(int entnum, int entchannel)
+void S_Batch_StopSound(int entnum, int entchannel)
 {
 	int i;
 
-    SND_LOCK
+    //SND_LOCK
 	for (i=0 ; i<MAX_DYNAMIC_CHANNELS ; i++)
 	{
 		if (channels[i].entnum == entnum
@@ -553,8 +622,38 @@ void S_StopSound(int entnum, int entchannel)
 		}
 	}
 unlock_mutex:
-    SND_UNLOCK
+    //SND_UNLOCK
     return;
+}
+
+void S_BatchProcessing(void)
+{
+    for (int i=0; i<sndcall_cache_size; i++)
+    {
+        sndcall_t* call = &sndcall_cache[i];
+        int type = call->type;
+        if (type == SNDCALL_TYPE_PLAY)
+        {
+            S_Batch_StartSound(call->entnum,call->entchannel,call->sfx,call->origin,call->fvol,call->attenuation);
+        }
+        else if (type == SNDCALL_TYPE_STOP)
+        {
+            S_Batch_StopSound(call->entnum,call->entchannel);
+        }
+    }
+    sndcall_cache_size = 0;
+    return;
+}
+
+void S_BatchProcessingCheck(void)
+{
+    if (!sndcall_cache_size)
+    {
+        return;
+    }
+    SND_LOCK
+    S_BatchProcessing();
+    SND_UNLOCK
 }
 
 void S_StopAllSounds(qboolean clear)
@@ -677,7 +776,7 @@ void S_StaticSound (sfx_t *sfx, vec3_t origin, float vol, float attenuation)
 
 	if (sc->loopstart == -1)
 	{
-		Con_Printf ("Sound %s not looped\n", sfx->name);
+		Con_Printf ("Sound %s not looped\n", sfx->namePtr);
         goto unlock_mutex;
 	}
 	
@@ -789,7 +888,7 @@ Called once each time through the main loop
 ============
 */
 
-void S_TempFixCache(void);
+void S_RefreshSoundFXCache(void);
 
 void S_Update(vec3_t origin, vec3_t forward, vec3_t right, vec3_t up)
 {
@@ -801,6 +900,8 @@ void S_Update(vec3_t origin, vec3_t forward, vec3_t right, vec3_t up)
     SND_LOCK
 	if (!sound_started || (snd_blocked > 0))
         goto unlock_mutex;
+
+    S_BatchProcessing();
 
 	VectorCopy(origin, listener_origin);
 	VectorCopy(forward, listener_forward);
@@ -856,13 +957,9 @@ void S_Update(vec3_t origin, vec3_t forward, vec3_t right, vec3_t up)
 				continue;
 			}
 		}
-		
-		
 	}
-    // todo
-    // proper fix for mixer loop calling (S_LoadSound -> Cache_Check -> Cache_UnlinkLRU)
-    S_TempFixCache();
-
+    DefragAllocator_DefragRoutine(&soundfx_cache.mem);
+    S_RefreshSoundFXCache();
 //
 // debugging output
 //
@@ -887,12 +984,9 @@ unlock_mutex:
     return;
 }
 
-// todo
-// implement threadsafe sfx cache for mixer
-void S_TempFixCache(void)
+void S_RefreshSoundFXCache(void)
 {
     channel_t *ch;
-    //sfxcache_t *sc;
     ch = channels;
     for (int i=0; i<total_channels ; i++, ch++)
     {
@@ -1075,7 +1169,10 @@ void S_SoundList(void)
 	total = 0;
 	for (sfx=known_sfx, i=0 ; i<num_sfx ; i++, sfx++)
 	{
-		sc = Cache_Check (&sfx->cache);
+        // todo
+        // implement cache
+        sc = NULL;
+		//sc = Cache_Check (&sfx->cache);
 		if (!sc)
 			continue;
 		size = sc->length*sc->width*(sc->stereo+1);
@@ -1084,7 +1181,7 @@ void S_SoundList(void)
 			Con_Printf ("L");
 		else
 			Con_Printf (" ");
-		Con_Printf("(%2db) %6i : %s\n",sc->width*8,  size, sfx->name);
+		Con_Printf("(%2db) %6i : %s\n",sc->width*8,  size, sfx->namePtr);
 	}
 	Con_Printf ("Total resident: %i\n", total);
 }

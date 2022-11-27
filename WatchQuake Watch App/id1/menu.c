@@ -612,7 +612,7 @@ void M_Load_Key (int k)
 		return;
 
 	case K_UPARROW:
-	case K_LEFTARROW:
+	//case K_LEFTARROW:
 		S_LocalSound ("misc/menu1.wav");
 		load_cursor--;
 		if (load_cursor < 0)
@@ -620,7 +620,7 @@ void M_Load_Key (int k)
 		break;
 
 	case K_DOWNARROW:
-	case K_RIGHTARROW:
+	//case K_RIGHTARROW:
 		S_LocalSound ("misc/menu1.wav");
 		load_cursor++;
 		if (load_cursor >= MAX_SAVEGAMES)
@@ -645,7 +645,7 @@ void M_Save_Key (int k)
 		return;
 
 	case K_UPARROW:
-	case K_LEFTARROW:
+	//case K_LEFTARROW:
 		S_LocalSound ("misc/menu1.wav");
 		load_cursor--;
 		if (load_cursor < 0)
@@ -653,7 +653,7 @@ void M_Save_Key (int k)
 		break;
 
 	case K_DOWNARROW:
-	case K_RIGHTARROW:
+	//case K_RIGHTARROW:
 		S_LocalSound ("misc/menu1.wav");
 		load_cursor++;
 		if (load_cursor >= MAX_SAVEGAMES)
@@ -1285,6 +1285,12 @@ extern cvar_t scr_showfps;
 
 int changedSettings = 0;
 
+int benchmark_demo = 0;
+const char* demos[] = {"demo1","demo2","demo3"};
+int demo_delays[] = {4,4,4};
+int demo_times[] = {60,64,78};
+#define BENCHMARK_DEMOS 3
+
 void M_SaveSettings(void)
 {
     if (changedSettings)
@@ -1303,6 +1309,24 @@ void M_AdjustSliders (int dir)
 
 	switch (options_cursor)
 	{
+    case 0: // benchmark demo
+        if (dir == 1)
+        {
+            benchmark_demo++;
+            if (benchmark_demo >= BENCHMARK_DEMOS)
+            {
+                benchmark_demo = 0;
+            }
+        }
+        else
+        {
+            benchmark_demo--;
+            if (benchmark_demo < 0)
+            {
+                benchmark_demo = BENCHMARK_DEMOS-1;
+            }
+        }
+        break;
 	case 3:	// screen size
 		scr_viewsize.value += dir * 10;
 		if (scr_viewsize.value < 100)//30)// flickering screen edges with smaller values!
@@ -1431,6 +1455,10 @@ void M_Options_Draw (void)
 
 	//M_Print (16, 32, "    Customize controls");
 	//M_Print (16, 40, "         Go to console");
+    M_Print (16, 32, "         Run Benchmark");
+    M_Print (16 + 25 * 8, 32,demos[benchmark_demo]);
+    
+    M_Print (16, 40, "       Clear Benchmark");
 	M_Print (16, 48, "     Reset to defaults");
     //M_Print (16, 48, "           Save Config");
 
@@ -1490,6 +1518,9 @@ void M_Options_Draw (void)
 	M_DrawCharacter (200, 32 + options_cursor*8, 12+((int)(realtime*4)&1));
 }
 
+OnMenuBenchmark M_BenchmarkBegin = NULL;
+OnMenuNavigate M_BenchmarkClear = NULL;
+
 void M_Options_Key (int k)
 {
 	switch (k)
@@ -1503,11 +1534,22 @@ void M_Options_Key (int k)
 		switch (options_cursor)
 		{
 		case 0:
+            if (M_BenchmarkBegin)
+            {
+                key_dest = key_game;
+                m_state = m_none;
+                //Cvar_SetValue("scr_showfps",1);
+                M_BenchmarkBegin(demos[benchmark_demo],demo_delays[benchmark_demo],demo_times[benchmark_demo]);
+            }
 			//M_Menu_Keys_f ();
 			break;
 		case 1:
-			m_state = m_none;
-			Con_ToggleConsole_f ();
+            if (M_BenchmarkClear)
+            {
+                M_BenchmarkClear();
+            }
+			//m_state = m_none;
+			//Con_ToggleConsole_f ();
 			break;
 		case 2:
             // read config from bundle
@@ -1529,7 +1571,7 @@ void M_Options_Key (int k)
 	case K_UPARROW:
 		S_LocalSound ("misc/menu1.wav");
 		options_cursor--;
-		if (options_cursor < 2)//0)
+		if (options_cursor < 0)
 			options_cursor = OPTIONS_ITEMS-1;
 		break;
 
@@ -1537,7 +1579,7 @@ void M_Options_Key (int k)
 		S_LocalSound ("misc/menu1.wav");
 		options_cursor++;
 		if (options_cursor >= OPTIONS_ITEMS)
-            options_cursor = 2;//0;
+            options_cursor = 0;
 		break;
 
 	case K_LEFTARROW:
@@ -3378,7 +3420,7 @@ void M_Maps_Key (int key)
                 }
             }
             break;
-        case K_ENTER:
+        case K_RIGHTARROW:
             if (m_maps_cursor == 0)
             {
                 S_LocalSound ("misc/menu1.wav");
@@ -3397,7 +3439,9 @@ void M_Maps_Key (int key)
                     m_maps_selectedDifficulty = 0;
                 }
             }
-            else if (m_maps_cursor == 2)
+            break;
+        case K_ENTER:
+            if (m_maps_cursor == 2)
             {
                 key_dest = key_game;
                 if (M_ExitMapsFunc)

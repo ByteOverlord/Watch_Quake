@@ -68,12 +68,32 @@ typedef struct
     byte    data[1];        // variable sized
 } sfxcache_t;
 
+typedef uint32_t u32;
+
 typedef struct sfx_s
 {
-	char 	name[MAX_QPATH];
-	cache_user_t	cache;
-    sfxcache_t* cacheForMixer;
+	//char name[MAX_QPATH];
+	//cache_user_t cache;
+    char* namePtr;
+    u32 cacheHandle;
 } sfx_t;
+
+#define SNDCALL_TYPE_NULL 0
+#define SNDCALL_TYPE_PLAY 1
+#define SNDCALL_TYPE_STOP 2
+
+typedef struct sndcall_s
+{
+    int type;
+    // play, stop
+    int entnum;
+    int entchannel;
+    // play
+    sfx_t *sfx;
+    vec3_t origin;
+    float fvol;
+    float attenuation;
+} sndcall_t;
 
 typedef struct
 {
@@ -117,12 +137,17 @@ typedef struct
 	int		dataofs;		// chunk starts this many bytes from file start
 } wavinfo_t;
 
+#include "DefragAllocator.h"
+extern DefragCache_t soundfx_cache;
+void S_InitSoundFXMemory(u32 maxSfx, u32 sampleRate);
+
 void S_Init (void);
 void S_Startup (void);
 void S_Shutdown (void);
 void S_StartSound (int entnum, int entchannel, sfx_t *sfx, vec3_t origin, float fvol,  float attenuation);
 void S_StaticSound (sfx_t *sfx, vec3_t origin, float vol, float attenuation);
 void S_StopSound (int entnum, int entchannel);
+void S_BatchProcessingCheck(void);
 void S_StopAllSounds(qboolean clear);
 void S_ClearBuffer (void);
 void GetSoundtime(void);

@@ -47,13 +47,16 @@ pthread_mutex_t input_lock;
 #define WQ_INPUT_PREVWEAPON  (u16)(0x0002)
 #define WQ_INPUT_NEXTWEAPON  (u16)(0x0004)
 #define WQ_INPUT_JUMP        (u16)(0x0008)
+
 #define WQ_INPUT_MENU_ESCAPE (u16)(0x0010)
 #define WQ_INPUT_MENU_ENTER  (u16)(0x0020)
 #define WQ_INPUT_MENU_LEFT   (u16)(0x0040)
-#define WQ_INPUT_MENU_UP     (u16)(0x0080)
-#define WQ_INPUT_MENU_DOWN   (u16)(0x0100)
-#define WQ_INPUT_SWIM_UP     (u16)(0x0200)
-#define WQ_INPUT_SWIM_DOWN   (u16)(0x0400)
+#define WQ_INPUT_MENU_RIGHT  (u16)(0x0080)
+
+#define WQ_INPUT_MENU_UP     (u16)(0x0100)
+#define WQ_INPUT_MENU_DOWN   (u16)(0x0200)
+#define WQ_INPUT_SWIM_UP     (u16)(0x0400)
+#define WQ_INPUT_SWIM_DOWN   (u16)(0x0800)
 
 typedef struct
 {
@@ -124,6 +127,111 @@ extern uint g_WQVidScreenWidth;
 extern uint g_WQVidScreenHeight;
 
 WQInput_t g_WQPlayerInput;
+
+#define WQ_BENCHMARK_STATE_NULL 0
+#define WQ_BENCHMARK_STATE_WAIT 1
+#define WQ_BENCHMARK_STATE_RUNNING 2
+#define WQ_BENCHMARK_STATE_ENDED 3
+
+typedef struct
+{
+    u64 timeStart;
+    u64 timeEnd;
+    u64 acc;
+    u64 lowest;
+    u64 highest;
+    u32 frames;
+    u32 state;
+} WQBenchmarkStats_t;
+
+WQBenchmarkStats_t g_BenchmarkStats;
+
+char benchmarkBuffer[256];
+
+void WQBenchmarkStats_Init(WQBenchmarkStats_t* b)
+{
+    b->timeStart = 0;
+    b->timeEnd = 0;
+    b->acc = 0;
+    b->lowest = ~((u64)0);
+    b->highest = 0;
+    b->frames = 0;
+    b->state = WQ_BENCHMARK_STATE_NULL;
+    memset(benchmarkBuffer,0,256);
+}
+
+void WQBenchmarkStats_Begin(WQBenchmarkStats_t* b, double delay, double time)
+{
+    double secondsToNanoSeconds = 1000000000.0;
+    b->timeStart = GetTimeNanoSeconds() + delay * secondsToNanoSeconds;
+    b->timeEnd = time * secondsToNanoSeconds;
+    b->acc = 0;
+    b->lowest = ~((u64)0);
+    b->highest = 0;
+    b->frames = 0;
+    b->state = WQ_BENCHMARK_STATE_WAIT;
+    snprintf(benchmarkBuffer,256,"Benchmark waiting --");
+}
+
+const char* WQGetBenchmarkString(void)
+{
+    return benchmarkBuffer;
+}
+
+void WQBenchmarkStats_Update(WQBenchmarkStats_t* b, u64 currentTime, u64 dt)
+{
+    if (b->state == WQ_BENCHMARK_STATE_NULL)
+    {
+        return;
+    }
+    else if (b->state == WQ_BENCHMARK_STATE_WAIT)
+    {
+        if (currentTime >= b->timeStart)
+        {
+            b->timeStart = currentTime;
+            b->timeEnd += currentTime;
+            snprintf(benchmarkBuffer,256,"Timer: %i\nAvg: --.--ms\nLow: --.--ms\nHigh: --.--ms",(int)GetDeltaTime(b->timeEnd - currentTime));
+            b->state = WQ_BENCHMARK_STATE_RUNNING;
+        }
+        else
+        {
+            if ((b->frames % 60) == 0)
+            {
+                snprintf(benchmarkBuffer,256,"Benchmark starts in %i",(int)GetDeltaTime(b->timeStart - currentTime));
+            }
+        }
+    }
+    else if (b->state == WQ_BENCHMARK_STATE_RUNNING)
+    {
+        b->acc += dt;
+        b->lowest = dt < b->lowest ? dt : b->lowest;
+        b->highest = dt > b->highest ? dt : b->highest;
+        b->frames++;
+        if (currentTime >= b->timeEnd)
+        {
+            double avg = (b->acc / b->frames) / 1000000.0;
+            double lo = b->lowest / 1000000.0;
+            double hi = b->highest / 1000000.0;
+            snprintf(benchmarkBuffer,256,"Result\nAvg: %.2fms\nLow: %.2fms\nHigh: %.2fms",avg,lo,hi);
+            b->state = WQ_BENCHMARK_STATE_ENDED;
+        }
+        else
+        {
+            if ((b->frames % 60) == 0)
+            {
+                double avg = (b->acc / b->frames) / 1000000.0;
+                double lo = b->lowest / 1000000.0;
+                double hi = b->highest / 1000000.0;
+                snprintf(benchmarkBuffer,256,"Timer: %i\nAvg: %.2fms\nLow: %.2fms\nHigh: %.2fms",(int)GetDeltaTime(b->timeEnd - currentTime),avg,lo,hi);
+            }
+            //snprintf(benchmarkBuffer,256,"Benchmark running: %.2f",GetDeltaTime(b->timeEnd - currentTime));
+        }
+    }
+    else if (b->state == WQ_BENCHMARK_STATE_ENDED)
+    {
+        
+    }
+}
 
 // todo
 //
@@ -319,6 +427,11 @@ volatile int frames = 0;
 
 void refresh_screen(void*);
 
+char statsBuffer[256];
+
+int statsHidden = 0;
+extern cvar_t scr_showfps;
+
 void WQUpdateStats(void)
 {
     double meanframeRate = 60;
@@ -333,6 +446,10 @@ void WQUpdateStats(void)
     g_WQFrameCounter = 0;
     g_WQFrametimeAggregate = 0;
     g_WQLastMeasurementTimeStamp = now;
+    if (scr_showfps.value != 0)
+    {
+        snprintf(statsBuffer,256,"FPS: %d, CPU: %.2fms, %dx%d", g_GameStats.frameCounter, g_GameStats.meanFrameTime, g_WQVidScreenWidth, g_WQVidScreenHeight);
+    }
 }
 
 WQGameStats_t WQGetStats(void)
@@ -342,15 +459,22 @@ WQGameStats_t WQGetStats(void)
 
 #include <string.h>
 
-char statsBuffer[256];
 const char* WQGetStatsString(void)
 {
-    snprintf(statsBuffer,256,"FPS: %d, CPU: %.2fms, %dx%d", g_GameStats.frameCounter, g_GameStats.meanFrameTime, g_WQVidScreenWidth, g_WQVidScreenHeight);
     return statsBuffer;
 }
 
-int statsHidden = 0;
-extern cvar_t scr_showfps;
+void WQOnChangeShowFps(cvar_t* var)
+{
+    if (var->value == 0)
+    {
+        memset(statsBuffer,0,256);
+    }
+    else
+    {
+        snprintf(statsBuffer,256,"FPS: --, CPU: --.--ms, %dx%d", g_WQVidScreenWidth, g_WQVidScreenHeight);
+    }
+}
 
 void* GameLoop(void* p)
 {
@@ -455,11 +579,35 @@ void WQOnMapsNavigate(void)
     dispatch_async_f(dispatch_get_main_queue(),NULL,refresh_mapselect);
 }
 
+void WQOnBenchmarkBegin(const char* demoName, int delay, int time)
+{
+    char buffer[256];
+    printf("benchmark begin\n");
+    snprintf(buffer,256,"playdemo %s",demoName);
+    Cmd_ExecuteString(buffer,src_command);
+    WQBenchmarkStats_Begin(&g_BenchmarkStats,delay,time);
+}
+
+void WQOnBenchmarkClear(void)
+{
+    printf("benchmark clear\n");
+    WQBenchmarkStats_Init(&g_BenchmarkStats);
+}
+
 void WQInit(void)
 {
     INPUT_INIT
     INPUT_LOCK
 
+    memset(benchmarkBuffer,0,256);
+    memset(statsBuffer,0,256);
+
+    WQBenchmarkStats_Init(&g_BenchmarkStats);
+    //WQBenchmarkStats_Begin(&g_BenchmarkStats,4,60 * 3 + 30);
+    //WQBenchmarkStats_Begin(&g_BenchmarkStats,4,70);
+
+    M_BenchmarkBegin = &WQOnBenchmarkBegin;
+    M_BenchmarkClear = &WQOnBenchmarkClear;
     M_EnterMapsFunc = &WQOnMapsNavigate;
     M_ExitMapsFunc = &WQOnMapsNavigate;
     M_SelectMapsFunc = &WQOnMapsNavigate;
@@ -487,6 +635,7 @@ void WQInit(void)
     Sys_Init([resourceDir UTF8String] , [resourceDir UTF8String], [saveDir UTF8String], [commandLine UTF8String]);
     Cvar_SetCallback(&vid_width,&VID_OnResize);
     Cvar_SetCallback(&vid_height,&VID_OnResize);
+    Cvar_SetCallback(&scr_showfps,&WQOnChangeShowFps);
 
     WQInitGameScreen();
 
@@ -836,6 +985,11 @@ void WQUpdate(void)
         WQKeyEvent(KEY_LEFTARROW,qTrue);
         WQKeyEvent(KEY_LEFTARROW,qFalse);
     }
+    if (g_WQPlayerInput.keys & WQ_INPUT_MENU_RIGHT)
+    {
+        WQKeyEvent(KEY_RIGHTARROW,qTrue);
+        WQKeyEvent(KEY_RIGHTARROW,qFalse);
+    }
     if (g_WQPlayerInput.keys & (WQ_INPUT_MENU_UP | WQ_INPUT_MENU_DOWN))
     {
         WQArrowCommand(g_WQPlayerInput.keys & WQ_INPUT_MENU_UP);
@@ -902,8 +1056,10 @@ void WQEndFrame(void)
     {
         dispatch_async_f(dispatch_get_main_queue(),NULL,refresh_screen);
     }
-    u64 frametimeU64 = GetTimeNanoSeconds() - frametimeStart;
+    u64 frametimeEnd = GetTimeNanoSeconds();
+    u64 frametimeU64 = frametimeEnd - frametimeStart;
     g_WQFrametimeAggregate += frametimeU64;
+    WQBenchmarkStats_Update(&g_BenchmarkStats,frametimeEnd,frametimeU64);
 }
 
 void WQInputTapAndPan(CGPoint location, int type)
@@ -925,7 +1081,7 @@ void WQInputTapAndPan(CGPoint location, int type)
             if (location.x > x || location.x < x2)// left or right side
             {
                 g_WQPlayerInput.keys |= location.x > x ? WQ_INPUT_NEXTWEAPON : WQ_INPUT_PREVWEAPON;
-                g_WQPlayerInput.keys |= location.x > x ? WQ_INPUT_MENU_ENTER : WQ_INPUT_MENU_LEFT;
+                g_WQPlayerInput.keys |= location.x > x ? WQ_INPUT_MENU_RIGHT : WQ_INPUT_MENU_LEFT;
             }
             else // middle
             {

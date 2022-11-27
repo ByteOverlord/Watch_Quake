@@ -56,6 +56,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Threading.hpp"
 #include "Threading.h"
 
+#include "DefragAllocator.h"
+extern DefragCache_t soundfx_cache;
+
 int g_WQMixerState = 1;
 
 void* WQAudioMixerLoop(void* p)
@@ -87,6 +90,7 @@ void* WQAudioMixerLoop(void* p)
         {
             goto unlock;
         }
+
         // Updates DMA time
         //GetSoundtime();
         {
@@ -97,7 +101,8 @@ void* WQAudioMixerLoop(void* p)
             fullsamples = shm->samples / shm->channels;
             // it is possible to miscount buffers if it has wrapped twice between
             // calls to S_Update.  Oh well.
-            samplepos = SNDDMA_GetDMAPos();
+            //samplepos = SNDDMA_GetDMAPos();
+            samplepos = shm->samplepos;
             if (samplepos < oldsamplepos)
             {
                 buffers++;                    // buffer wrapped
@@ -105,7 +110,9 @@ void* WQAudioMixerLoop(void* p)
                 {   // time to chop things off to avoid 32 bit limits
                     buffers = 0;
                     paintedtime = fullsamples;
-                    S_StopAllSounds (qTrue);
+                    SND_UNLOCK
+                    S_StopAllSounds (qTrue);// uses SND_LOCK
+                    SND_LOCK
                 }
             }
             oldsamplepos = samplepos;
@@ -128,6 +135,7 @@ void* WQAudioMixerLoop(void* p)
             endtime = soundtime + samps;
         }
 
+        //DefragAllocator_DefragRoutine(&soundfx_cache.mem);
         //S_PaintChannels (endtime);
         {
             int     i;
@@ -157,16 +165,7 @@ void* WQAudioMixerLoop(void* p)
                         continue;
                     if (!ch->leftvol && !ch->rightvol)
                         continue;
-                    // todo
-                    //
-                    // implement threadsafe sfx cache for mixer
-                    //
-                    // temporary fix
-                    sc = ch->sfx->cacheForMixer;// will fail eventually when Cache_Alloc calls Cache_Free ( cache_head.lru_prev->user )
-                    //
-                    // S_LoadSound(ch->sfx) calls Cache_Check(sfx->cache) -> Cache_UnlinkLRU (cs) Cache_MakeLRU (cs)
-                    //
-                    //S_LoadSound (ch->sfx);// this is a bad idea!
+                    sc = DefragCache_GetPointer(&soundfx_cache,ch->sfx->cacheHandle,DEFRAG_TYPE_SFXCACHE);
                     if (!sc)
                         continue;
 
