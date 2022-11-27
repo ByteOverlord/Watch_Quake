@@ -1,23 +1,19 @@
 ![Logo](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Watch_Quake_Logo_01.png)
 18.11.2022
 
-Watch_Quake is a Quake 1 port for Apple Watches that uses software rendering and has mostly working audio playback. Runs shareware and registered versions of the game with optional “cd” audio.
+Watch_Quake is a Quake 1 port for Apple Watches that uses software rendering and has working audio playback. Runs shareware and registered versions of the game with optional music tracks.
 
 <https://www.youtube.com/watch?v=89TAt72eYt4> (Series 5 gameplay video)
 
 This port started from the original Quake Watch port by Tomas "MyOwnClone" Vymazal.
  
-Complete game with optional music takes 97,9 MB on the watch.
+## About
 
-```
-PAK0.PAK is 18,7 MB
-PAK1.PAK is 34,3 MB
-Music Tracks are 39,3 MB (converted with Audacity (Mono, 22050 Hz, WAV, IMA ADPCM))
-```
+We where intrigued by MyOwnClone’s quake_watch port and saw the potential of the Apple Watch. The controls needed be tweaked a bit and adjust the game to run in fullscreen. We envisioned a port that would feel closer to a commercial release but have the same menu structure and feel of the original 1996 Quake release. The initial spark was given for the project and ByteOverlord started refining the various aspects about this game port.
 
 ![Photo](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/WQ_Photo_2.jpg)
 
-**Changes by ByteOverlord**
+## Changes by ByteOverlord
 
 * Sound Mixer separated to a second thread from the drawing pipeline to give the Mixer more time for processing.
 * “cd” audio support added. Audio file format “Mono, 22050 Hz, WAV, IMA ADPCM” preferred for lower processing and minimal space required.
@@ -27,6 +23,8 @@ Music Tracks are 39,3 MB (converted with Audacity (Mono, 22050 Hz, WAV, IMA ADPC
 * Cheats menu added with toggles that stay active in level changes.
 * Saves game config (Options) and save games (.sav) in “Application Support” folder. Game config saves automatically when the app goes to background.
 * Resolution setting is automatic with hud, menu and console notification placements affected by resolution.
+* "Run Benchmark" mode with selectable Demo1, Demo2 and Demo3 added in the options menu.
+* DefragAllocator and DefragCache. Replaces sound cache.
 
 ![Photo](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/WQ_Photo_3.jpg)
 
@@ -35,14 +33,15 @@ Music Tracks are 39,3 MB (converted with Audacity (Mono, 22050 Hz, WAV, IMA ADPC
 * PAK0 and PAK1 loading
 * Menu screen
 * Save and load game
-* Autosaving options
+* Autosaving of options
 * Map quick select screen
 * Cheat activation screen
 * Tweaked controls for watch interface
 * Underwater audio effect
 * Position and animation interpolation
 * Music playback
-* Automatic native resolution (Series 5 40mm -> Ultra)
+* Benchmark mode
+* Automatic native resolution (Series 4 40mm -> Ultra)
 
 ![Controls](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Menu_Controls.png)
 
@@ -50,7 +49,95 @@ Music Tracks are 39,3 MB (converted with Audacity (Mono, 22050 Hz, WAV, IMA ADPC
 
 ## Changelog
 
-* **<em>SOUNDFIX! Fixed possible crash with audio cache / 19.11.2022</em>**
+**27.11.2022</em>**  
+
+* **<em>Benchmark section added</em>**
+* **<em>Series 4 updated as supported in requirements</em>**
+* **<em>DefragAllocator added in the project</em>**
+* **<em>Sound fixes</em>**
+* **<em>"Run Benchmark" added in the options menu</em>**
+* **<em>Menu controls tweaked</em>**
+
+19.11.2022  
+
+* <em>SOUNDFIX! Fixed possible crash with audio cache</em>
+
+## Game size 
+ 
+Complete game with optional music takes 97,9 MB on the watch.
+
+```
+PAK0.PAK is 18,7 MB
+PAK1.PAK is 34,3 MB
+Music Tracks are 39,3 MB (converted with Audacity (Mono, 22050 Hz, WAV, IMA ADPCM))
+```
+
+
+## Benchmark
+
+#### Performance table:  
+
+Good  | Moderate  | Bad
+------------- | ------------- |-------------
+≤ 5 ms  | 6-12 ms  | > 16 ms  |
+
+#### Results: 
+
+DEMO1  | Avg  | Low  | High  |
+-------- | ------------- | ------------- | ------------- |
+S4 40mm  | 4.19  | 2.01  | 11.85  |
+S4 44mm  | -  | -  | -  |
+S5 40mm  | 4.17  | 2.12  | 11.08  |
+S5 44mm  | 4.76  | 2.41  | 13.17  |
+SE (1st Gen) 40mm  | -  | -  | -  |
+SE (1st Gen) 44mm  | -  | -  | -  |
+S6 40mm  | -  | -  | -  |
+S6 44mm  | -  | -  | -  |
+S7 41mm  | -  | -  | -  |
+S7 45mm  | -  | -  | -  |
+SE (2nd Gen) 40mm  | -  | -  | -  |
+SE (2nd Gen) 44mm  | -  | -  | -  |
+S8 41mm  | -  | -  | -  |
+S8 45mm  | -  | -  | -  |
+Ultra    | -  | -  | -  |
+
+DEMO2  | Avg  | Low  | High  |
+-------- | ------------- | ------------- | ------------- |
+S4 40mm  | 3.75  | 1.91  | 12.29  |
+S4 44mm  | -  | -  | -  |
+S5 40mm  | 3.72  | 1.80  | 10.67  |
+S5 44mm  | 4.15  | 1.92  | 11.21  |
+SE (1st Gen) 40mm  | -  | -  | -  |
+SE (1st Gen) 44mm  | -  | -  | -  |
+S6 40mm  | -  | -  | -  |
+S6 44mm  | -  | -  | -  |
+S7 41mm  | -  | -  | -  |
+S7 45mm  | -  | -  | -  |
+SE (2nd Gen) 40mm  | -  | -  | -  |
+SE (2nd Gen) 44mm  | -  | -  | -  |
+S8 41mm  | -  | -  | -  |
+S8 45mm  | -  | -  | -  |
+Ultra    | -  | -  | -  |
+
+DEMO3  | Avg  | Low  | High  |
+-------- | ------------- | ------------- | ------------- |
+S4 40mm  | 4.54  | 1.88  | 12.62  |
+S4 44mm  | -  | -  | -  |
+S5 40mm  | 4.37  | 1.77  | 12.84  |
+S5 44mm  | 5.06  | 2.15  | 15.78  |
+SE (1st Gen) 40mm  | -  | -  | -  |
+SE (1st Gen) 44mm  | -  | -  | -  |
+S6 40mm  | -  | -  | -  |
+S6 44mm  | -  | -  | -  |
+S7 41mm  | -  | -  | -  |
+S7 45mm  | -  | -  | -  |
+SE (2nd Gen) 40mm  | -  | -  | -  |
+SE (2nd Gen) 44mm  | -  | -  | -  |
+S8 41mm  | -  | -  | -  |
+S8 45mm  | -  | -  | -  |
+Ultra    | -  | -  | -  |
+
+Benchmarks are only indicative.
 
 ## Known issues
 
@@ -64,7 +151,7 @@ Music Tracks are 39,3 MB (converted with Audacity (Mono, 22050 Hz, WAV, IMA ADPC
 
 ## Building Requirements
 
-* Apple Watch Series 5 or later with watchOS 9.1 or later
+* Apple Watch Series 4 or later with watchOS 9.1 or later
 * iPhone 8 or later with iOS 16 or later
 * Xcode 14.1 or later with command-line tools
 * Homebrew
@@ -74,26 +161,6 @@ Music Tracks are 39,3 MB (converted with Audacity (Mono, 22050 Hz, WAV, IMA ADPC
 
 
 ## Building the Watch_Quake
-
-Set the iPhone and Apple Watch in to "Developer" mode.
-
-On iPhone:  
-`Settings -> Privacy & Security -> Developer Mode (SECURITY) -> Developer Mode`
-
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_A.png)
-  
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_B.png)
-  
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_C.png)
-
-On Apple Watch:  
-`Settings -> Privacy & Security -> Developer Mode (SECURITY) -> Developer Mode`
-
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_D.png)
-  
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_E.png)
-  
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_F.png)
 
 Install Xcode through Apple AppStore and install command-line tools when Xcode asks for it.
 
@@ -185,12 +252,41 @@ Test the build first with a simulator (Series 5 Simulator or up (watchOS Simulat
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_06A.png)
 
 
-After testing connect iPhone to the Mac and make sure Apple Watch is connected to it. Select the Apple Watch as target.
+After testing connect iPhone to the Mac and make sure Apple Watch is connected to it.
+
+Set the iPhone and Apple Watch in to "Developer" mode.
+
+On iPhone:  
+`Settings -> Privacy & Security -> Developer Mode (SECURITY) -> Developer Mode`
+
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_A.png)
+  
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_B.png)
+  
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_C.png)
+
+On Apple Watch:  
+`Settings -> Privacy & Security -> Developer Mode (SECURITY) -> Developer Mode`
+
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_D.png)
+  
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_E.png)
+  
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_F.png)
+
+After the devices have restarted.  
+
+Select the Apple Watch as target.
 
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_07.png)
 
-Build it to the watch. (Depending on the game files that were added. Transfer might take from 5-20 min) 
+From Xcode build the Watch_Quake to the watch.  
+
+
+Transfer takes:  
+5-20 min (iPhone X)  
+<1 min (iPhone 12) 
 
 ## Adding music to the game (Optional)
 
@@ -228,15 +324,20 @@ Place the exported audio files (track02 - track11.wav) inside the Watch Quake pr
 `“WatchQuake Watch App/Resources/id1/music/”`
 
 
-From Xcode build the Watch_Quake to the watch. (Transfer might take from 5-20 min)
+From Xcode build the Watch_Quake to the watch.  
+
+
+Transfer takes:  
+5-20 min (iPhone X)  
+<1 min (iPhone 12)
 
 ![Photo](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/WQ_Photo_1.jpg)
 
 ## Credits
 
 quake\_watch <https://github.com/MyOwnClone/quake_watch>  
-vkquake (Underwater sound filter. snd_dma init) <https://github.com/Novum/vkQuake>  
-Quakespasm (Animation and movement interpolation.) <https://github.com/sezero/quakespasm>  
+vkquake (Underwater sound filter, snd_dma init) <https://github.com/Novum/vkQuake>  
+Quakespasm (Position and animation interpolation) <https://github.com/sezero/quakespasm>  
 Quake\_For\_OSX <https://github.com/Izhido/Quake\_For\_OSX>  
 Quake-iOS <https://github.com/tomkidd/Quake-iOS>  
 Quake source code by Id Software. <https://github.com/id-Software/Quake>  
