@@ -48,11 +48,14 @@ const char* M_GetSelectedMapName(void);
 typedef void (*OnMenuNavigate)(void);
 typedef void (*OnMenuBenchmark)(const char*,int,int);
 
+typedef void (*HostSpawnCallback)(void);
+
 extern OnMenuBenchmark M_BenchmarkBegin;
 extern OnMenuNavigate M_BenchmarkClear;
 extern OnMenuNavigate M_EnterMapsFunc;
 extern OnMenuNavigate M_ExitMapsFunc;
 extern OnMenuNavigate M_SelectMapsFunc;
+extern HostSpawnCallback M_OnHostSpawn;
 
 #ifdef __cplusplus
 }

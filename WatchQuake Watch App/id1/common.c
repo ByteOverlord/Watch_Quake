@@ -1717,6 +1717,7 @@ Sets com_gamedir, adds the directory to the head of the path,
 then loads and adds pak1.pak pak2.pak ... 
 ================
 */
+uint64_t paksLoaded = 0;
 void COM_AddGameDirectory (char *dir)
 {
 	int                             i;
@@ -1737,6 +1738,7 @@ void COM_AddGameDirectory (char *dir)
 //
 // add any pak files in the format pak0.pak pak1.pak, ...
 //
+    paksLoaded = 0;
 	for (i=0 ; ; i++)
 	{
 		sprintf(pakfile, "%s/PAK%i.PAK", dir, i);
@@ -1744,6 +1746,7 @@ void COM_AddGameDirectory (char *dir)
 		pak = COM_LoadPackFile (pakfile);
 		if (!pak)
 			break;
+        paksLoaded |= 1 << i;
 		search = Hunk_Alloc (sizeof(searchpath_t));
 		search->pack = pak;
 		search->next = com_searchpaths;

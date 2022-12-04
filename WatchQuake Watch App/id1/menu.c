@@ -712,8 +712,8 @@ char* m_cheats_names[][2] =
     {"impulse 9\n",    "      Give All Weapons"},
 };
 
-typedef void (*HostSpawnCallback)(void);
 extern HostSpawnCallback OnPlayerSpawnFunc;
+HostSpawnCallback M_OnHostSpawn = NULL;
 
 extern edict_t *sv_player;
 
@@ -763,6 +763,10 @@ void M_OnPlayerSpawn(void)
     M_SetCheatState(0,FL_GODMODE);
     M_SetCheatState(1,FL_NOTARGET);
     M_SetCheatState(2,FL_FLY);
+    if (M_OnHostSpawn)
+    {
+        M_OnHostSpawn();
+    }
 }
 
 void M_OnCheatStateChange(int index)
@@ -3353,6 +3357,7 @@ int m_maps_selectedDifficulty = 0;
 int m_maps_selectedMap = 0;
 int m_maps_cursor = 0;
 #define MAPS_LEVELS 31
+#define MAPS_LEVELS_LIMITED 8
 #define MAPS_ITEMS 3
 
 const char* M_GetSelectedMapName(void)
@@ -3379,6 +3384,8 @@ void M_Maps_Draw (void)
     M_DrawCharacter (64 + 6 * 8, 32 + 4 * 8 + m_maps_cursor*8 - MENU_Y_OFFSET, 12+((int)(realtime*4)&1));
 }
 
+extern uint64_t paksLoaded;
+
 void M_Maps_Key (int key)
 {
     switch (key)
@@ -3404,8 +3411,12 @@ void M_Maps_Key (int key)
             S_LocalSound ("misc/menu1.wav");
             if (m_maps_cursor == 0)
             {
+                // is PAK1 loaded
+                int maxLevels = paksLoaded & 0x02 ? MAPS_LEVELS : MAPS_LEVELS_LIMITED;
                 if (--m_maps_selectedMap < 0)
-                    m_maps_selectedMap = MAPS_LEVELS - 1;
+                {
+                    m_maps_selectedMap = maxLevels - 1;
+                }
                 if (M_SelectMapsFunc)
                 {
                     M_SelectMapsFunc();
@@ -3424,7 +3435,9 @@ void M_Maps_Key (int key)
             if (m_maps_cursor == 0)
             {
                 S_LocalSound ("misc/menu1.wav");
-                if (++m_maps_selectedMap >= MAPS_LEVELS)
+                // is PAK1 loaded
+                int maxLevels = paksLoaded & 0x02 ? MAPS_LEVELS : MAPS_LEVELS_LIMITED;
+                if (++m_maps_selectedMap >= maxLevels)
                     m_maps_selectedMap = 0;
                 if (M_SelectMapsFunc)
                 {
