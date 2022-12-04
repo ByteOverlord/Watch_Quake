@@ -6,14 +6,29 @@ Watch_Quake is a Quake 1 port for Apple Watches that uses software rendering and
 <https://www.youtube.com/watch?v=89TAt72eYt4> (Series 5 gameplay video)
 
 This port started from the original Quake Watch port by Tomas "MyOwnClone" Vymazal.
- 
-## About
+
+## Contents
+
+[**About**](#about)  
+[**Changes by ByteOverlord**](#changes)  
+[**Features**](#features)  
+[**Changelog**](#changelog)  
+[**Game Size**](#size)  
+[**Benchmark**](#benchmark)  
+[**Known Issues**](#issues)  
+[**Building Requirements**](#requirements)  
+[**Building the Watch_Quake**](#building)  
+[**Adding music to Watch_Quake (Optional)**](#music)  
+[**Credits**](#credits)  
+[**License**](#license)  
+
+## <a name="about"></a>About
 
 We where intrigued by MyOwnClone’s quake_watch port and saw the potential of the Apple Watch. The controls needed be tweaked a bit and adjust the game to run in fullscreen. We envisioned a port that would feel closer to a commercial release but have the same menu structure and feel of the original 1996 Quake release. The initial spark was given for the project and ByteOverlord started refining the various aspects about this game port.
 
 ![Photo](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/WQ_Photo_2.jpg)
 
-## Changes by ByteOverlord
+## <a name="changes"></a>Changes by ByteOverlord
 
 * Sound Mixer separated to a second thread from the drawing pipeline to give the Mixer more time for processing.
 * “cd” audio support added. Audio file format “Mono, 22050 Hz, WAV, IMA ADPCM” preferred for lower processing and minimal space required.
@@ -28,7 +43,7 @@ We where intrigued by MyOwnClone’s quake_watch port and saw the potential of t
 
 ![Photo](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/WQ_Photo_3.jpg)
 
-## Features
+## <a name="features"></a>Features
 
 * PAK0 and PAK1 loading
 * Menu screen
@@ -47,7 +62,7 @@ We where intrigued by MyOwnClone’s quake_watch port and saw the potential of t
 
 ![Controls](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/In_Game_Controls.png)
 
-## Changelog
+## <a name="changelog"></a>Changelog
 
 **04.12.2022**  
 
@@ -67,7 +82,7 @@ We where intrigued by MyOwnClone’s quake_watch port and saw the potential of t
 
 * <em>Sound fix (Fixed possible crash with audio cache)</em>
 
-## Game size 
+## <a name="size"></a>Game size 
  
 Complete game with optional music takes ~ 99,4 MB on the watch.
 
@@ -78,7 +93,7 @@ Music Tracks are 39,3 MB (converted with Audacity (Mono, 22050 Hz, WAV, IMA ADPC
 ```
 
 
-## Benchmark
+## <a name="benchmark"></a>Benchmark
 
 #### Reference table:  
 
@@ -143,9 +158,9 @@ S8 45mm  | -  | -  | -  |
 Ultra    | -  | -  | -  |
 
 
-Benchmarks are only indicative.
+<em>Benchmarks are only indicative.</em> 
 
-## Known issues
+## <a name="issues"></a>Known Issues
 
 * Audio will not transmit through Bluetooth
 * Shareware version (using only PAK0) softlocks when going through a episode 2-4 portals
@@ -154,7 +169,7 @@ Benchmarks are only indicative.
 * Sound does not playback on app start (Put the game to the dock and open it from there again.)
 * App does not start anymore (Build the app to the watch from Xcode. Force quit the app on the watch while Xcode is still running. Close Xcode and disconnect the iPhone from the computer. Start the app from the watch)
 
-## Building Requirements
+## <a name="requirements"></a>Building Requirements
 
 * Apple Watch Series 4 or later with watchOS 9.1 or later
 * iPhone 8 or later with iOS 16 or later
@@ -165,17 +180,17 @@ Benchmarks are only indicative.
 * Audacity (only for music)
 
 
-## Building the Watch_Quake
+## <a name="building"></a>Building the Watch_Quake
 
-Install Xcode through Apple AppStore and install command-line tools when Xcode asks for it.
+1) Install Xcode through Apple AppStore and install command-line tools when Xcode asks for it.
 
-Download the Watch Quake from GitHub. (<https://github.com/ByteOverlord/Watch_Quake>)
+2) Download the Watch Quake from GitHub. (<https://github.com/ByteOverlord/Watch_Quake>)
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00.png)
 
-Get Quake through gog.com (if you just want to use the shareware jump to “Copy PAK...” and only use the shareware’s PAK0.PAK)
+3) Get Quake through gog.com (if you just want to use the shareware jump to step “8. Copy PAK...” and only use the shareware’s PAK0.PAK)
 
-Download the quake installer from your gog.com profile:  
+4) Download the quake installer from your gog.com profile:  
  `"gog.com Profile" -> Games -> Quake -> View Downloads -> Download Offline Backup Game Installers -> Quake`
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_01_A.png)
@@ -184,54 +199,57 @@ Download the quake installer from your gog.com profile:
   
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_02.png)
 
-Install Homebrew from terminal:   
+5) Install Homebrew from terminal:   
 `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/homebrew/go/install)"`
 	
-Install innoextract from Homebrew:
+6) Install innoextract from Homebrew:
 
 ```
 brew update
 brew install innoextract
 ```
 
-In terminal extract the Quake game files with innoextract:   
+7) In terminal extract the Quake game files with innoextract:   
 `innoextract “downloaded setup_quake_the_offering_2.0.0.6.exe file location”`
 
 (innoextract will extract an “app” and "tmp" folders in current working directory.)	
 "app" folder has the needed PAK files and optional audio.
 
-Copy PAK0.PAK and PAK1.PAK files to WatchQuake project (PAK names have to be uppercase (case sensitive)):   
+8) Copy PAK0.PAK and PAK1.PAK files to WatchQuake project (PAK names have to be uppercase (case sensitive)):   
 `/WatchQuake Watch App/Resources/id1/`
 
 
-Open the GitHub WatchQuake Xcode project.
+9) Open the GitHub WatchQuake Xcode project.
 
 
-In WatchQuake project file go to:  
+10) In WatchQuake project file go to:  
 `WatchQuake -> Targets -> WatchQuake -> Signing & Capabilities`
 
-Select your "Team" and write a unique “Bundle Identifier”.
+11) Select your "Team" and write a unique “Bundle Identifier”.
 
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_03.png)
-Then in WatchQuake project file go to:  
+
+12) Then in WatchQuake project file go to:  
  `WatchQuake -> Targets -> WatchQuake Watch App -> Signing & Capabilities`
 
-Select your "Team" and use the same “Bundle Identifier” as previously but with “.watchkitapp” added at the end.
+13) Select your "Team" and use the same “Bundle Identifier” as previously but with “.watchkitapp” added at the end.
 
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_04.png)
 
-If the project “Frameworks” folder shows the framework texts in red:
+If the project “Frameworks” folder shows the framework texts in red continue with step 14.
+
+If the project “Frameworks” folder shows the framework texts in white jump to step 17.
 
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_05A.png)
 	
-In WatchQuake project file go to:  
+14) In WatchQuake project file go to:  
 `WatchQuake -> Targets -> WatchQuake -> Build Phases -> Link Binary With Libraries`
 
 
-Add these frameworks:
+15) Add these frameworks:
 
 ```
 AVFoundation.framework
@@ -243,23 +261,24 @@ UIKit.framework
 
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_05B.png)
-And after adding them delete the frameworks with red text.
 
-Check that the project is on release setting.
+16)  And after adding them delete the frameworks with red text.
+
+17) Check that the project is on release setting.
 
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_06.png)
 
 
-Test the build first with a simulator (Series 5 Simulator or up (watchOS Simulator))
+18) Test the build first with a simulator (Series 5 Simulator or up (watchOS Simulator))
 
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_06A.png)
 
 
-After testing connect iPhone to the Mac and make sure Apple Watch is connected to it.
+19) After testing connect iPhone to the Mac with a cable and make sure Apple Watch has a connection to iPhone.
 
-Set the iPhone and Apple Watch in to "Developer" mode.
+20) Set the iPhone and Apple Watch in to "Developer" mode.
 
 On iPhone:  
 `Settings -> Privacy & Security -> Developer Mode (SECURITY) -> Developer Mode`
@@ -281,12 +300,12 @@ On Apple Watch:
 
 After the devices have restarted.  
 
-Select the Apple Watch as target.
+21) Select the Apple Watch as target.
 
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_07.png)
 
-From Xcode build the Watch_Quake to the watch.  
+22) From Xcode build the Watch_Quake to the watch.  
 
 
 Transfer times:  
@@ -295,31 +314,37 @@ Transfer times:
 <1 min (iPhone 12 mini & S5 40mm)  
 <1 min (iPhone 12 mini & SE 2nd Gen 44mm)
 
-## Adding music to the game (Optional)
+Transfer times:  
+<1 min (iPhone X & S4 40mm)  
+5-20 min (iPhone X & S5 44mm)  
+<1 min (iPhone 12 mini & S5 40mm)  
+<1 min (iPhone 12 mini & SE 2nd Gen 44mm)
 
-Install bchunk from terminal:  
+## <a name="music"></a>Adding music to Watch_Quake (Optional)
+
+1) Install bchunk from terminal:  
 `brew install bchunk`
 
 
-Extract game music from the gog game files:  
+2) Extract game music from the gog game files:  
 `bchunk -w “game.gog file location” “game.cue file location” track`
 
 
-(Music tracks will extract in to current working directory (track02 - track11.wav).)
+3) (Music tracks will extract in to current working directory (track02 - track11.wav).)
 
 
-Open Audacity and drag the tracks to it. Edit the tracks one by one to Mono.  
+4) Open Audacity and drag the tracks to it. Edit the tracks one by one to Mono.  
 `Tracks -> Mix -> Mix Stereo Down to Mono`
 
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Music_Install_Guide_00.png)
 
-Set the “Project Rate (Hz)” to 22050.
+5) Set the “Project Rate (Hz)” to 22050.
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Music_Install_Guide_01.png)
 
 
-Export tracks with “Export Multiple” in “WAV” format with “IMA ADPCM” encoding.
+6) Export tracks with “Export Multiple” in “WAV” format with “IMA ADPCM” encoding.
 
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Music_Install_Guide_02.png)
@@ -327,11 +352,11 @@ Export tracks with “Export Multiple” in “WAV” format with “IMA ADPCM�
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Music_Install_Guide_03.png)
 
 
-Place the exported audio files (track02 - track11.wav) inside the Watch Quake project:   
+7) Place the exported audio files (track02 - track11.wav) inside the Watch Quake project:   
 `“WatchQuake Watch App/Resources/id1/music/”`
 
 
-From Xcode build the Watch_Quake to the watch.  
+8) From Xcode build the Watch_Quake to the watch.  
 
 
 Transfer times:  
@@ -342,7 +367,7 @@ Transfer times:
 
 ![Photo](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/WQ_Photo_1.jpg)
 
-## Credits
+## <a name="credits"></a>Credits
 
 quake\_watch <https://github.com/MyOwnClone/quake_watch>  
 vkquake (Underwater sound filter, snd_dma init) <https://github.com/Novum/vkQuake>  
@@ -353,5 +378,5 @@ Quake source code by Id Software. <https://github.com/id-Software/Quake>
 App icon, documentation and video by IdeaVoid
 
 
-## License
+## <a name="license"></a>License
 This software is released under the terms of the GNU General Public License v2.
