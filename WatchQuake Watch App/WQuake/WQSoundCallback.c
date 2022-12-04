@@ -53,35 +53,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 // snd_mix.c -- portable code to mix sounds for snd_dma.c
-#include "Threading.hpp"
-#include "Threading.h"
 
 #include "DefragAllocator.h"
 extern DefragCache_t soundfx_cache;
 
-int g_WQMixerState = 1;
-
 void* WQAudioMixerLoop(void* p)
 {
-    while (g_runMixer)
     {
-        if (g_WQState != 1)
-        {
-            if (g_WQMixerState)
-            {
-                SetAudioMixerQOS(0);
-                g_WQMixerState = 0;
-            }
-            SleepFor(1);
-        }
-        else
-        {
-            if (!g_WQMixerState)
-            {
-                SetAudioMixerQOS(1);
-                g_WQMixerState = 1;
-            }
-        }
         SND_LOCK
         unsigned endtime;
         int samps;
@@ -135,7 +113,6 @@ void* WQAudioMixerLoop(void* p)
             endtime = soundtime + samps;
         }
 
-        //DefragAllocator_DefragRoutine(&soundfx_cache.mem);
         //S_PaintChannels (endtime);
         {
             int     i;

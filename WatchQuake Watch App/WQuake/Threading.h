@@ -14,10 +14,7 @@ extern "C" {
 
 typedef void* (*ThreadingFunction)(void*);
 
-void SetConcurrency(int i);
-void SetAudioMixerQOS(int i);
-void SetAudioMixerLoop(ThreadingFunction,void*);
-void SetGameUpdateTask(ThreadingFunction, const char* name);
+void SetGameUpdateTasks(ThreadingFunction gameLoop, ThreadingFunction mixerLoop, const char* name);
 void SetGameLoopState(int i);
 
 #ifdef __cplusplus

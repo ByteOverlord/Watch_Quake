@@ -651,9 +651,11 @@ void S_BatchProcessingCheck(void)
     {
         return;
     }
-    SND_LOCK
-    S_BatchProcessing();
-    SND_UNLOCK
+    if (!SND_TRYLOCK)
+    {
+        S_BatchProcessing();
+        SND_UNLOCK
+    }
 }
 
 void S_StopAllSounds(qboolean clear)

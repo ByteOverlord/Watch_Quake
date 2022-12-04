@@ -26,6 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifdef SND_THREADSAFE
 #define SND_LOCK pthread_mutex_lock(&snd_lock);
 #define SND_UNLOCK pthread_mutex_unlock(&snd_lock);
+#define SND_TRYLOCK pthread_mutex_trylock(&snd_lock)
 #else
 #define SND_LOCK
 #define SND_UNLOCK
