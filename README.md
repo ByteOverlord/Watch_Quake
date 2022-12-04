@@ -49,18 +49,23 @@ We where intrigued by MyOwnClone’s quake_watch port and saw the potential of t
 
 ## Changelog
 
-**27.11.2022</em>**  
+**04.12.2022**  
 
-* **<em>Benchmark section added</em>**
-* **<em>Series 4 updated as supported in requirements</em>**
-* **<em>DefragAllocator added in the project</em>**
-* **<em>Sound fixes</em>**
-* **<em>"Run Benchmark" added in the options menu</em>**
-* **<em>Menu controls tweaked</em>**
+* **<em>Cameralook fix (Better input handling)</em>**
+* **<em>Sound fix (Stabilized performance on newer watches (tested on SE 2nd Gen))</em>**
 
-19.11.2022  
+<em>27.11.2022</em> 
 
-* <em>SOUNDFIX! Fixed possible crash with audio cache</em>
+* <em>Benchmark section added</em>
+* <em>Series 4 updated as supported in requirements</em>
+* <em>DefragAllocator added in the project</em>
+* <em>Sound fixes</em>
+* <em>"Run Benchmark" added in the options menu</em>
+* <em>Menu controls tweaked</em>
+
+<em>19.11.2022</em>   
+
+* <em>Sound fix (Fixed possible crash with audio cache)</em>
 
 ## Game size 
  
@@ -85,10 +90,10 @@ Good  | Moderate  | Bad
 
 DEMO1  | Avg  | Low  | High  |
 -------- | ------------- | ------------- | ------------- |
-S4 40mm  | 4.19  | 2.01  | 11.85  |
+S4 40mm  | 5.94  | 2.63  | 13.41  |
 S4 44mm  | -  | -  | -  |
-S5 40mm  | 4.17  | 2.12  | 11.08  |
-S5 44mm  | 4.76  | 2.41  | 13.17  |
+S5 40mm  | -  | -  | -  |
+S5 44mm  | 6.13  | 2.71  | 13.96  |
 SE (1st Gen) 40mm  | -  | -  | -  |
 SE (1st Gen) 44mm  | -  | -  | -  |
 S6 40mm  | -  | -  | -  |
@@ -96,17 +101,17 @@ S6 44mm  | -  | -  | -  |
 S7 41mm  | -  | -  | -  |
 S7 45mm  | -  | -  | -  |
 SE (2nd Gen) 40mm  | -  | -  | -  |
-SE (2nd Gen) 44mm  | -  | -  | -  |
+SE (2nd Gen) 44mm  | 7.35  | 2.61  | 14.98  |
 S8 41mm  | -  | -  | -  |
 S8 45mm  | -  | -  | -  |
 Ultra    | -  | -  | -  |
 
 DEMO2  | Avg  | Low  | High  |
 -------- | ------------- | ------------- | ------------- |
-S4 40mm  | 3.75  | 1.91  | 12.29  |
+S4 40mm  | 5.50  | 1.95  | 14.79  |
 S4 44mm  | -  | -  | -  |
-S5 40mm  | 3.72  | 1.80  | 10.67  |
-S5 44mm  | 4.15  | 1.92  | 11.21  |
+S5 40mm  | -  | -  | -  |
+S5 44mm  | 5.94  | 2.51  | 15.36  |
 SE (1st Gen) 40mm  | -  | -  | -  |
 SE (1st Gen) 44mm  | -  | -  | -  |
 S6 40mm  | -  | -  | -  |
@@ -114,17 +119,17 @@ S6 44mm  | -  | -  | -  |
 S7 41mm  | -  | -  | -  |
 S7 45mm  | -  | -  | -  |
 SE (2nd Gen) 40mm  | -  | -  | -  |
-SE (2nd Gen) 44mm  | -  | -  | -  |
+SE (2nd Gen) 44mm  | 6.77  | 2.12  | 15.20  |
 S8 41mm  | -  | -  | -  |
 S8 45mm  | -  | -  | -  |
 Ultra    | -  | -  | -  |
 
 DEMO3  | Avg  | Low  | High  |
 -------- | ------------- | ------------- | ------------- |
-S4 40mm  | 4.54  | 1.88  | 12.62  |
+S4 40mm  | 6.21  | 1.99  | 14.21  |
 S4 44mm  | -  | -  | -  |
-S5 40mm  | 4.37  | 1.77  | 12.84  |
-S5 44mm  | 5.06  | 2.15  | 15.78  |
+S5 40mm  | -  | -  | -  |
+S5 44mm  | 6.41  | 2.78  | 14.01  |
 SE (1st Gen) 40mm  | -  | -  | -  |
 SE (1st Gen) 44mm  | -  | -  | -  |
 S6 40mm  | -  | -  | -  |
@@ -132,17 +137,18 @@ S6 44mm  | -  | -  | -  |
 S7 41mm  | -  | -  | -  |
 S7 45mm  | -  | -  | -  |
 SE (2nd Gen) 40mm  | -  | -  | -  |
-SE (2nd Gen) 44mm  | -  | -  | -  |
+SE (2nd Gen) 44mm  | 7.47  | 2.06  | 14.59  |
 S8 41mm  | -  | -  | -  |
 S8 45mm  | -  | -  | -  |
 Ultra    | -  | -  | -  |
+
 
 Benchmarks are only indicative.
 
 ## Known issues
 
 * Audio will not transmit through Bluetooth
-* Camera rotates suddenly on some occasions
+* Shareware version (using only PAK0) softlocks when going through a episode 2-4 portals
 * Smooth animation on, torches flicker on the edges of the view
 * R_AliasDrawModel trivial_accept disabled (Incorrect bounding box?)
 * Sound does not playback on app start (Put the game to the dock and open it from there again.)
@@ -283,9 +289,11 @@ Select the Apple Watch as target.
 From Xcode build the Watch_Quake to the watch.  
 
 
-Transfer takes:  
-5-20 min (iPhone X)  
-<1 min (iPhone 12) 
+Transfer times:  
+<1 min (iPhone X & S4 40mm)  
+5-20 min (iPhone X & S5 44mm)  
+<1 min (iPhone 12 mini & S5 40mm)  
+<1 min (iPhone 12 mini & SE 2nd Gen 44mm)
 
 ## Adding music to the game (Optional)
 
@@ -326,9 +334,11 @@ Place the exported audio files (track02 - track11.wav) inside the Watch Quake pr
 From Xcode build the Watch_Quake to the watch.  
 
 
-Transfer takes:  
-5-20 min (iPhone X)  
-<1 min (iPhone 12)
+Transfer times:  
+<1 min (iPhone X & S4 40mm)  
+5-20 min (iPhone X & S5 44mm)  
+<1 min (iPhone 12 mini & S5 40mm)  
+<1 min (iPhone 12 mini & SE 2nd Gen 44mm)
 
 ![Photo](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/WQ_Photo_1.jpg)
 
