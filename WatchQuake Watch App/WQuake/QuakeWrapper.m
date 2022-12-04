@@ -24,10 +24,12 @@ pthread_mutex_t input_lock;
 #define INPUT_INIT pthread_mutex_init(&input_lock,NULL);
 #define INPUT_LOCK pthread_mutex_lock(&input_lock);
 #define INPUT_UNLOCK pthread_mutex_unlock(&input_lock);
+//static_assert(0,"input_lock");
 #else
 #define INPUT_INIT
 #define INPUT_LOCK
 #define INPUT_UNLOCK
+static_assert(0,"no input_lock");
 #endif
 
 // Quake keys
@@ -106,6 +108,13 @@ CGPoint g_WQPrevPanPoint = {0,0};
 CGPoint g_WQCurPanPoint = {0,0};
 int g_WQPanState = 0;
 int g_WQPrevPanState = 0;
+
+CGPoint g_WQPanEventPositions[8];
+u8 g_WQPanEventStates;
+int g_WQNumPanEvents;
+
+int g_WQMaxInputsPerFrame = 0;
+int g_WQInputsPerFrame = 0;
 
 float g_WQSwimTimer = 0;
 float g_WQJumpTimer = 0;
@@ -273,6 +282,21 @@ INPUT_UNLOCK
     return 0;
 }
 
+void WQClerAllInputState(void)
+{
+    g_WQTurnX = 0;
+    g_WQTurnY = 0;
+    g_WQPlayerInput.keys = 0;
+    g_WQPlayerInput.vel = 0;
+    g_WQPanState = 0;
+    g_WQPrevPanState = g_WQPanState;
+    g_WQPrevPanPoint = g_WQCurPanPoint;
+    
+    memset(g_WQPanEventPositions,0,sizeof(g_WQPanEventPositions));
+    g_WQPanEventStates = 0;
+    g_WQNumPanEvents = 1;
+}
+
 void WQNotifyActive(int isActive)
 {
 INPUT_LOCK
@@ -282,13 +306,7 @@ INPUT_LOCK
        //printf("Notify Active\n");
 
        // clear player input
-       g_WQTurnX = 0;
-       g_WQTurnY = 0;
-       g_WQPlayerInput.keys = 0;
-       g_WQPlayerInput.vel = 0;
-       g_WQPanState = 0;
-       g_WQPrevPanState = g_WQPanState;
-       g_WQPrevPanPoint = g_WQCurPanPoint;
+       WQClerAllInputState();
    }
    else
    {
@@ -594,6 +612,13 @@ void WQOnBenchmarkClear(void)
     WQBenchmarkStats_Init(&g_BenchmarkStats);
 }
 
+void WQOnHostSpawn(void)
+{
+    INPUT_LOCK
+    WQClerAllInputState();
+    INPUT_UNLOCK
+}
+
 void WQInit(void)
 {
     INPUT_INIT
@@ -611,6 +636,7 @@ void WQInit(void)
     M_EnterMapsFunc = &WQOnMapsNavigate;
     M_ExitMapsFunc = &WQOnMapsNavigate;
     M_SelectMapsFunc = &WQOnMapsNavigate;
+    M_OnHostSpawn = &WQOnHostSpawn;
     
     g_WQFrameCounter = 0;
     g_WQFrametimeAggregate = 0;
@@ -649,6 +675,10 @@ void WQInit(void)
 
     WQInputInit(&g_WQPlayerInput);
 
+    memset(g_WQPanEventPositions,0,sizeof(g_WQPanEventPositions));
+    g_WQPanEventStates = 0;
+    g_WQNumPanEvents = 0;
+
     INPUT_UNLOCK
 }
 
@@ -656,9 +686,7 @@ void WQSetLoop(void)
 {
     int threads = GetHardwareConcurrency();
     printf("hardware concurrency %i\n",threads);
-    SetConcurrency(2);
-    SetAudioMixerLoop(&WQAudioMixerLoop,NULL);
-    SetGameUpdateTask(&GameLoop,"ge.WatchQuake.queue");
+    SetGameUpdateTasks(&GameLoop,&WQAudioMixerLoop,"ge.WatchQuake.queue");
     SetGameLoopState(1);
 }
 
@@ -841,6 +869,8 @@ void WQUpdate(void)
         g_WQFullAuto = qFalse;
         g_WQShootTimer = 1.0f;
         WQShootCommand(qFalse);
+        //
+        WQClerAllInputState();
     }
     if (key_dest == key_game)
     {
@@ -935,39 +965,44 @@ void WQUpdate(void)
                 WQShootCommand(qFalse);
             }
         }
-        if (g_WQPanState)
+        g_WQTurnX = 0.0f;
+        g_WQTurnY = 0.0f;
+        for (int i=0; i<g_WQNumPanEvents; i++)
         {
-            if (!g_WQPrevPanState)// touch started
+            g_WQPanState = g_WQPanEventStates & 0x01;
+            g_WQCurPanPoint = g_WQPanEventPositions[i];
+            if (g_WQPanState)
+            {
+                if (!g_WQPrevPanState)// touch started
+                {
+                    g_WQPrevPanPoint = g_WQCurPanPoint;
+                }
+            }
+            else // touch ended
             {
                 g_WQPrevPanPoint = g_WQCurPanPoint;
             }
+            g_WQPrevPanState = g_WQPanState;
+            
+            if (g_WQPanState)
+            {
+                CGPoint vel;
+                vel.x =  g_WQCurPanPoint.x - g_WQPrevPanPoint.x;
+                vel.y =  g_WQCurPanPoint.y - g_WQPrevPanPoint.y;
+                g_WQPrevPanPoint = g_WQCurPanPoint;
+                if ((vel.x * vel.x + vel.y * vel.y) > 0.1)// stop drifting
+                {
+                    g_WQTurnX += vel.x;
+                    g_WQTurnY += vel.y;
+                }
+            }
+            else
+            {
+                g_WQTurnX = 0.0f;
+                g_WQTurnY = 0.0f;
+            }
+            g_WQPanEventStates >>= 1;
         }
-        else // touch ended
-        {
-            g_WQPrevPanPoint = g_WQCurPanPoint;
-        }
-        g_WQPrevPanState = g_WQPanState;
-
-        if (g_WQPanState)
-        {
-            CGPoint vel;
-            vel.x =  g_WQCurPanPoint.x - g_WQPrevPanPoint.x;
-            vel.y =  g_WQCurPanPoint.y - g_WQPrevPanPoint.y;
-            g_WQPrevPanPoint = g_WQCurPanPoint;
-            g_WQTurnX = vel.x;
-            g_WQTurnY = vel.y;
-        }
-        else
-        {
-            g_WQTurnX = 0.0f;
-            g_WQTurnY = 0.0f;
-        }
-    }
-    else
-    {
-        g_WQPrevPanPoint = g_WQCurPanPoint;
-        g_WQTurnX = 0.0f;
-        g_WQTurnY = 0.0f;
     }
 
     if (g_WQPlayerInput.keys & WQ_INPUT_MENU_ENTER)
@@ -1009,7 +1044,13 @@ void WQUpdate(void)
     prev_key_dest = key_dest;// remember where input was directed last frame
 
     WQInputClear(&g_WQPlayerInput);
+
+    memset(g_WQPanEventPositions,0,sizeof(g_WQPanEventPositions));
+    g_WQPanEventStates = 0;
+    g_WQNumPanEvents = 0;
     
+    g_WQMaxInputsPerFrame = g_WQInputsPerFrame > g_WQMaxInputsPerFrame ? g_WQInputsPerFrame : g_WQMaxInputsPerFrame;
+    g_WQInputsPerFrame = 0;
     INPUT_UNLOCK
 
     g_QWPaletteCopied = 0;
@@ -1065,41 +1106,58 @@ void WQEndFrame(void)
 void WQInputTapAndPan(CGPoint location, int type)
 {
     INPUT_LOCK
-
-    if (type == 2)// tapping
+    if (type == -1)// cancel
     {
-        CGFloat x = g_GameStats.devWidth / 2.0f;
-        CGFloat x2 = x / 2.0f;
-        x += x2;
-        CGFloat y = g_GameStats.devHeight - g_GameStats.devHeight / 10.0;
-        if (location.y < g_GameStats.devHeight / 10.0)// upper part of the screen
-        {
-            g_WQPlayerInput.keys |= location.x > x2 ? WQ_INPUT_SWIM_UP : WQ_INPUT_SWIM_DOWN;
-        }
-        else if (location.y > y)// lower part of the screen, inventory
-        {
-            if (location.x > x || location.x < x2)// left or right side
-            {
-                g_WQPlayerInput.keys |= location.x > x ? WQ_INPUT_NEXTWEAPON : WQ_INPUT_PREVWEAPON;
-                g_WQPlayerInput.keys |= location.x > x ? WQ_INPUT_MENU_RIGHT : WQ_INPUT_MENU_LEFT;
-            }
-            else // middle
-            {
-                g_WQPlayerInput.keys |= WQ_INPUT_JUMP;
-            }
-        }
-        else
-        {
-            g_WQPlayerInput.keys |= WQ_INPUT_MENU_ENTER;
-            g_WQPlayerInput.keys |= WQ_INPUT_FIRE;
-        }
+        // clear buffered pan events
+        memset(g_WQPanEventPositions,0,sizeof(g_WQPanEventPositions));
+        g_WQPanEventStates = 0;
+        g_WQNumPanEvents = 1;
     }
-
-    // if tapping, type == 0
-    // else type 0-1
-    g_WQPanState = type & 0x01;
-    g_WQCurPanPoint = location;
-
+    else
+    {
+        if (type == 2)// tapping
+        {
+            CGFloat x = g_GameStats.devWidth / 2.0f;
+            CGFloat x2 = x / 2.0f;
+            x += x2;
+            CGFloat y = g_GameStats.devHeight - g_GameStats.devHeight / 10.0;
+            if (location.y < g_GameStats.devHeight / 10.0)// upper part of the screen
+            {
+                g_WQPlayerInput.keys |= location.x > x2 ? WQ_INPUT_SWIM_UP : WQ_INPUT_SWIM_DOWN;
+            }
+            else if (location.y > y)// lower part of the screen, inventory
+            {
+                if (location.x > x || location.x < x2)// left or right side
+                {
+                    g_WQPlayerInput.keys |= location.x > x ? WQ_INPUT_NEXTWEAPON : WQ_INPUT_PREVWEAPON;
+                    g_WQPlayerInput.keys |= location.x > x ? WQ_INPUT_MENU_RIGHT : WQ_INPUT_MENU_LEFT;
+                }
+                else // middle
+                {
+                    g_WQPlayerInput.keys |= WQ_INPUT_JUMP;
+                }
+            }
+            else
+            {
+                g_WQPlayerInput.keys |= WQ_INPUT_MENU_ENTER;
+                g_WQPlayerInput.keys |= WQ_INPUT_FIRE;
+            }
+        }
+        
+        // if tapping, type == 0
+        // else type 0-1
+        if (g_WQNumPanEvents < 8)
+        {
+            g_WQPanEventPositions[g_WQNumPanEvents] = location;
+            if ((type & 0x01))
+            {
+                g_WQPanEventStates |= 0x01 << g_WQNumPanEvents;
+            }
+            ++g_WQNumPanEvents;
+        }
+        
+        ++g_WQInputsPerFrame;
+    }
     INPUT_UNLOCK
 }
 
@@ -1108,7 +1166,8 @@ void WQInputLongPress(void)
     INPUT_LOCK
 
     g_WQPlayerInput.keys |= WQ_INPUT_MENU_ESCAPE;
-    
+
+    ++g_WQInputsPerFrame;
     INPUT_UNLOCK
 }
 
@@ -1130,6 +1189,7 @@ void WQInputCrownRotate(float f, float delta)
         g_WQPlayerInput.keys |= WQ_INPUT_MENU_UP;
     }
 
+    ++g_WQInputsPerFrame;
     INPUT_UNLOCK
 }
 
