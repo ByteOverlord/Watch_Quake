@@ -15,6 +15,7 @@ extension View {
 }
 
 struct TouchDownAndPanEventModifier: ViewModifier {
+    @GestureState private var touchState = false
     @State private var tapped = false
     @State private var time = UInt64(0)
     let callback: (CGPoint,Int) -> Void
@@ -22,11 +23,14 @@ struct TouchDownAndPanEventModifier: ViewModifier {
         content
             .simultaneousGesture(
                 DragGesture(minimumDistance: 0.0)
+                    .updating($touchState) {(value, gestureState, transaction) in
+                        gestureState = true
+                    }
                     .onChanged { value in
                         if !self.tapped {
                             self.tapped = true
                             self.time = GetTimeNanoSeconds()// thread safe?
-                        }
+                        }                        
                         self.callback(value.location,1)// pan changed
                     }
                     .onEnded { value in
@@ -47,6 +51,12 @@ struct TouchDownAndPanEventModifier: ViewModifier {
                         }
                         self.tapped = false
                     }
-            )
+            ).onChange(of: touchState) { _ in
+                // gesture cancelled
+                if touchState == false && self.tapped {
+                    self.callback(CGPoint(x: 0.0, y: 0.0),-1)// pan cancel
+                    self.tapped = false
+                }
+            }
     }
 }
