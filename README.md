@@ -173,6 +173,7 @@ Ultra    | -  | -  | -  |
 
 * Apple Watch Series 4 or later with watchOS 9.1 or later
 * iPhone 8 or later with iOS 16 or later
+* Mac with macOS 12.5 or later
 * Xcode 14.1 or later with command-line tools
 * Homebrew
 * Innoextract
