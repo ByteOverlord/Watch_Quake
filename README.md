@@ -58,9 +58,9 @@ We where intrigued by MyOwnClone’s quake_watch port and saw the potential of t
 * Benchmark mode
 * Automatic native resolution (Series 4 40mm -> Ultra)
 
-![Controls](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Menu_Controls.png)
+![Controls](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Menu_Controls.jpg)
 
-![Controls](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/In_Game_Controls.png)
+![Controls](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/In_Game_Controls.jpg)
 
 ## <a name="changelog"></a>Changelog
 
@@ -185,20 +185,22 @@ Ultra    | -  | -  | -  |
 
 1) Install Xcode through Apple AppStore and install command-line tools when Xcode asks for it.
 
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_0.jpg)
+
 2) Download the Watch Quake from GitHub. (<https://github.com/ByteOverlord/Watch_Quake>)
 
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00.png)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00.jpg)
 
 3) Get Quake through gog.com (if you just want to use the shareware jump to step “8. Copy PAK...” and only use the shareware’s PAK0.PAK)
 
 4) Download the quake installer from your gog.com profile:  
  `"gog.com Profile" -> Games -> Quake -> View Downloads -> Download Offline Backup Game Installers -> Quake`
 
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_01_A.png)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_01_A.jpg)
 
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_01.png)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_01.jpg)
   
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_02.png)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_02.jpg)
 
 5) Install Homebrew from terminal:   
 `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/homebrew/go/install)"`
@@ -229,7 +231,7 @@ brew install innoextract
 11) Select your "Team" and write a unique “Bundle Identifier”.
 
 
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_03.png)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_03.jpg)
 
 12) Then in WatchQuake project file go to:  
  `WatchQuake -> Targets -> WatchQuake Watch App -> Signing & Capabilities`
@@ -237,14 +239,15 @@ brew install innoextract
 13) Select your "Team" and use the same “Bundle Identifier” as previously but with “.watchkitapp” added at the end.
 
 
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_04.png)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_04.jpg)
 
 If the project “Frameworks” folder shows the framework texts in red continue with step 14.
 
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_05A.jpg)
+
 If the project “Frameworks” folder shows the framework texts in white jump to step 17.
 
-
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_05A.png)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_05AB.jpg)
 	
 14) In WatchQuake project file go to:  
 `WatchQuake -> Targets -> WatchQuake -> Build Phases -> Link Binary With Libraries`
@@ -261,20 +264,20 @@ UIKit.framework
 ```
 
 
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_05B.png)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_05B.jpg)
 
 16)  And after adding them delete the frameworks with red text.
 
 17) Check that the project is on release setting.
 
 
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_06.png)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_06.jpg)
 
 
 18) Test the build first with a simulator (Series 5 Simulator or up (watchOS Simulator))
 
 
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_06A.png)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_06A.jpg)
 
 
 19) After testing connect iPhone to the Mac with a cable and make sure Apple Watch has a connection to iPhone.
@@ -284,36 +287,29 @@ UIKit.framework
 On iPhone:  
 `Settings -> Privacy & Security -> Developer Mode (SECURITY) -> Developer Mode`
 
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_A.png)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_A.jpg)
   
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_B.png)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_B.jpg)
   
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_C.png)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_C.jpg)
 
 On Apple Watch:  
 `Settings -> Privacy & Security -> Developer Mode (SECURITY) -> Developer Mode`
 
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_D.png)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_D.jpg)
   
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_E.png)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_E.jpg)
   
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_F.png)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_00_F.jpg)
 
 After the devices have restarted.  
 
 21) Select the Apple Watch as target.
 
 
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_07.png)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_07.jpg)
 
 22) From Xcode build the Watch_Quake to the watch.  
-
-
-Transfer times:  
-<1 min (iPhone X & S4 40mm)  
-5-20 min (iPhone X & S5 44mm)  
-<1 min (iPhone 12 mini & S5 40mm)  
-<1 min (iPhone 12 mini & SE 2nd Gen 44mm)
 
 Transfer times:  
 <1 min (iPhone X & S4 40mm)  
@@ -338,19 +334,19 @@ Transfer times:
 `Tracks -> Mix -> Mix Stereo Down to Mono`
 
 
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Music_Install_Guide_00.png)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Music_Install_Guide_00.jpg)
 
 5) Set the “Project Rate (Hz)” to 22050.
 
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Music_Install_Guide_01.png)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Music_Install_Guide_01.jpg)
 
 
 6) Export tracks with “Export Multiple” in “WAV” format with “IMA ADPCM” encoding.
 
 
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Music_Install_Guide_02.png)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Music_Install_Guide_02.jpg)
   
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Music_Install_Guide_03.png)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Music_Install_Guide_03.jpg)
 
 
 7) Place the exported audio files (track02 - track11.wav) inside the Watch Quake project:   
