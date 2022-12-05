@@ -92,7 +92,6 @@ PAK1.PAK is 34,3 MB
 Music Tracks are 39,3 MB (converted with Audacity (Mono, 22050 Hz, WAV, IMA ADPCM))
 ```
 
-
 ## <a name="benchmark"></a>Benchmark
 
 #### Reference table:  
@@ -157,7 +156,6 @@ S8 41mm  | -  | -  | -  |
 S8 45mm  | -  | -  | -  |
 Ultra    | -  | -  | -  |
 
-
 <em>Benchmarks are only indicative.</em> 
 
 ## <a name="issues"></a>Known Issues
@@ -179,7 +177,6 @@ Ultra    | -  | -  | -  |
 * Innoextract
 * bchunk (only for music)
 * Audacity (only for music)
-
 
 ## <a name="building"></a>Building the Watch_Quake
 
@@ -221,15 +218,12 @@ brew install innoextract
 8) Copy PAK0.PAK and PAK1.PAK files to WatchQuake project (PAK names have to be uppercase (case sensitive)):   
 `/WatchQuake Watch App/Resources/id1/`
 
-
 9) Open the GitHub WatchQuake Xcode project.
-
 
 10) In WatchQuake project file go to:  
 `WatchQuake -> Targets -> WatchQuake -> Signing & Capabilities`
 
 11) Select your "Team" and write a unique “Bundle Identifier”.
-
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_03.jpg)
 
@@ -237,7 +231,6 @@ brew install innoextract
  `WatchQuake -> Targets -> WatchQuake Watch App -> Signing & Capabilities`
 
 13) Select your "Team" and use the same “Bundle Identifier” as previously but with “.watchkitapp” added at the end.
-
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_04.jpg)
 
@@ -252,7 +245,6 @@ If the project “Frameworks” folder shows the framework texts in white jump t
 14) In WatchQuake project file go to:  
 `WatchQuake -> Targets -> WatchQuake -> Build Phases -> Link Binary With Libraries`
 
-
 15) Add these frameworks:
 
 ```
@@ -263,22 +255,17 @@ SwiftUI.framework
 UIKit.framework
 ```
 
-
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_05B.jpg)
 
 16)  And after adding them delete the frameworks with red text.
 
 17) Check that the project is on release setting.
 
-
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_06.jpg)
-
 
 18) Test the build first with a simulator (Series 5 Simulator or up (watchOS Simulator))
 
-
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_06A.jpg)
-
 
 19) After testing connect iPhone to the Mac with a cable and make sure Apple Watch has a connection to iPhone.
 
@@ -306,10 +293,11 @@ After the devices have restarted.
 
 21) Select the Apple Watch as target.
 
-
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_07.jpg)
 
 22) From Xcode build the Watch_Quake to the watch.  
+
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_08.jpg)
 
 Transfer times:  
 <1 min (iPhone X & S4 40mm)  
@@ -322,17 +310,13 @@ Transfer times:
 1) Install bchunk from terminal:  
 `brew install bchunk`
 
-
 2) Extract game music from the gog game files:  
 `bchunk -w “game.gog file location” “game.cue file location” track`
 
-
 3) (Music tracks will extract in to current working directory (track02 - track11.wav).)
-
 
 4) Open Audacity and drag the tracks to it. Edit the tracks one by one to Mono.  
 `Tracks -> Mix -> Mix Stereo Down to Mono`
-
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Music_Install_Guide_00.jpg)
 
@@ -340,21 +324,18 @@ Transfer times:
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Music_Install_Guide_01.jpg)
 
-
 6) Export tracks with “Export Multiple” in “WAV” format with “IMA ADPCM” encoding.
-
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Music_Install_Guide_02.jpg)
   
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Music_Install_Guide_03.jpg)
 
-
 7) Place the exported audio files (track02 - track11.wav) inside the Watch Quake project:   
 `“WatchQuake Watch App/Resources/id1/music/”`
 
-
 8) From Xcode build the Watch_Quake to the watch.  
 
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_08.jpg)
 
 Transfer times:  
 <1 min (iPhone X & S4 40mm)  
@@ -373,7 +354,6 @@ Quake\_For\_OSX <https://github.com/Izhido/Quake\_For\_OSX>
 Quake-iOS <https://github.com/tomkidd/Quake-iOS>  
 Quake source code by Id Software. <https://github.com/id-Software/Quake>  
 App icon, documentation and video by IdeaVoid
-
 
 ## <a name="license"></a>License
 This software is released under the terms of the GNU General Public License v2.
