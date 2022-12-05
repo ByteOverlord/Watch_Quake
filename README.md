@@ -3,7 +3,8 @@
 
 Watch_Quake is a Quake 1 port for Apple Watches that uses software rendering and has working audio playback. Runs shareware and registered versions of the game with optional music tracks.
 
-<https://www.youtube.com/watch?v=89TAt72eYt4> (Series 5 gameplay video)
+<https://www.youtube.com/watch?v=ptKAh8RgzJM> Benchmark (Series 5)  
+<https://www.youtube.com/watch?v=89TAt72eYt4> Gameplay (Series 5)
 
 This port started from the original Quake Watch port by Tomas "MyOwnClone" Vymazal.
 
