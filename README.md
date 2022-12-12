@@ -25,6 +25,11 @@ This port started from the original Quake Watch port by Tomas "MyOwnClone" Vymaz
 
 ## <a name="about"></a>About
 
+
+<p align="center">
+  <img src="https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/wquake_ico_00.png" />
+</p>
+
 We where intrigued by MyOwnClone’s quake_watch port and saw the potential of the Apple Watch. The controls needed be tweaked a bit and adjust the game to run in fullscreen. We envisioned a port that would feel closer to a commercial release but have the same menu structure and feel of the original 1996 Quake release. The initial spark was given for the project and ByteOverlord started refining the various aspects about this game port.
 
 ![Photo](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/WQ_Photo_2.jpg)
@@ -166,7 +171,7 @@ Ultra    | -  | -  | -  |
 * Smooth animation on, torches flicker on the edges of the view
 * R_AliasDrawModel trivial_accept disabled (Incorrect bounding box?)
 * Sound does not playback on app start (Put the game to the dock and open it from there again.)
-* App does not start anymore (Build the app to the watch from Xcode. Force quit the app on the watch while Xcode is still running. Close Xcode and disconnect the iPhone from the computer. Start the app from the watch)
+* App does not start anymore (Build the app to the watch from Xcode). There is a 7 day testing period on a 'Free Provisioning' profile.
 
 ## <a name="requirements"></a>Building Requirements
 
@@ -316,10 +321,13 @@ Transfer times:
 
 3) (Music tracks will extract in to current working directory (track02 - track11.wav).)
 
-4) Open Audacity and drag the tracks to it. Edit the tracks one by one to Mono.  
+4) Open Audacity and drag the tracks to it. Edit the tracks to Mono.  
+`Select -> All`  
 `Tracks -> Mix -> Mix Stereo Down to Mono`
 
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Music_Install_Guide_00.jpg)
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Music_Install_Guide_00.jpg)  
+
+![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Music_Install_Guide_00A.jpg)  
 
 5) Set the “Project Rate (Hz)” to 22050.
 
@@ -351,7 +359,7 @@ Transfer times:
 quake\_watch <https://github.com/MyOwnClone/quake_watch>  
 vkquake (Underwater sound filter, snd_dma init) <https://github.com/Novum/vkQuake>  
 Quakespasm (Position and animation interpolation) <https://github.com/sezero/quakespasm>  
-Quake\_For\_OSX <https://github.com/Izhido/Quake\_For\_OSX>  
+Quake\_For\_OSX <https://github.com/Izhido/Quake_For_OSX>  
 Quake-iOS <https://github.com/tomkidd/Quake-iOS>  
 Quake source code by Id Software. <https://github.com/id-Software/Quake>  
 App icon, documentation and video by IdeaVoid
