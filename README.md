@@ -1,7 +1,10 @@
 ![Logo](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Watch_Quake_Logo_01.png)
 18.11.2022
+<p align="center">
+  <img src="https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Watch_Quake_demo2_00.gif" width="35%" />
+</p>
 
-Watch_Quake is a Quake 1 port for Apple Watches that uses software rendering and has working audio playback. Runs shareware and registered versions of the game with optional music tracks.
+Watch_Quake is a Quake 1 port specifically designed for Apple Watch, incorporating software rendering and functional audio playback capabilities. This game port supports both the shareware and registered versions of Quake. Providing a gaming experience that can be enjoyed while on the move complete with optional music tracks.
 
 <https://www.youtube.com/watch?v=ptKAh8RgzJM> Benchmark (Series 5)  
 <https://www.youtube.com/watch?v=89TAt72eYt4> Gameplay (Series 5)
@@ -27,10 +30,10 @@ This port started from the original Quake Watch port by Tomas "MyOwnClone" Vymaz
 
 
 <p align="center">
-  <img src="https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/wquake_ico_00.png" />
+  <img src="https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/wquake_ico_00.png" width="15%" />
 </p>
 
-We where intrigued by MyOwnClone’s quake_watch port and saw the potential of the Apple Watch. The controls needed be tweaked a bit and adjust the game to run in fullscreen. We envisioned a port that would feel closer to a commercial release but have the same menu structure and feel of the original 1996 Quake release. The initial spark was given for the project and ByteOverlord started refining the various aspects about this game port.
+Our team became highly interested in MyOwnClone's quake_watch port and immediately recognized the immense potential that the Apple Watch had for gaming. Upon closer examination, we realized that a few adjustments were required in terms of controls and optimizing the game to run in fullscreen mode. Our vision was to create a port that not only captured the essence of the original 1996 Quake release but also provided a gaming experience akin to a polished commercial product. This initial idea sparked the beginning of the project, and ByteOverlord enthusiastically began refining the different elements of this game port, ensuring every aspect received meticulous attention.
 
 ![Photo](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/WQ_Photo_2.jpg)
 
@@ -70,12 +73,16 @@ We where intrigued by MyOwnClone’s quake_watch port and saw the potential of t
 
 ## <a name="changelog"></a>Changelog
 
-**04.12.2022**  
+**04.07.2023**
 
-* **<em>Cameralook fix (Better input handling)</em>**
-* **<em>Sound fix (Stabilized performance on newer watches (tested on SE 2nd Gen))</em>**
+* **<em>Controls updated for more simple layout</em>**
 
-<em>27.11.2022</em> 
+<em>04.12.2022</em>
+
+* <em>Cameralook fix (Better input handling)</em>
+* <em>Sound fix (Stabilized performance on newer watches (tested on SE 2nd Gen))</em>
+
+<em>27.11.2022</em>
 
 * <em>Benchmark section added</em>
 * <em>Series 4 updated as supported in requirements</em>
@@ -84,7 +91,7 @@ We where intrigued by MyOwnClone’s quake_watch port and saw the potential of t
 * <em>"Run Benchmark" added in the options menu</em>
 * <em>Menu controls tweaked</em>
 
-<em>19.11.2022</em>   
+<em>19.11.2022</em>
 
 * <em>Sound fix (Fixed possible crash with audio cache)</em>
 
@@ -362,7 +369,7 @@ Quakespasm (Position and animation interpolation) <https://github.com/sezero/qua
 Quake\_For\_OSX <https://github.com/Izhido/Quake_For_OSX>  
 Quake-iOS <https://github.com/tomkidd/Quake-iOS>  
 Quake source code by Id Software. <https://github.com/id-Software/Quake>  
-App icon, documentation and video by IdeaVoid
+App icon, images, documentation and videos by IdeaVoid
 
 ## <a name="license"></a>License
 This software is released under the terms of the GNU General Public License v2.
