@@ -15,6 +15,7 @@
 #include "quakedef.h"
 
 extern float g_WQForwardSpeed;
+extern float g_WQStrafeSpeed;
 extern float g_WQTurnX;
 extern float g_WQTurnY;
 extern uint g_WQFlags;
@@ -57,28 +58,36 @@ void IN_Commands (void)
 {
 }
 
+void UpdateSpeed(float* f)
+{
+    if (*f > 0.0)
+    {
+        *f = *f - (1.0 / 60.0f);
+        if (*f < 0.0)
+        {
+            *f = 0.0;
+        }
+    }
+    else if (*f < 0.0)
+    {
+        *f = *f + (1.0 / 60.0f);
+        if (*f > 0.0)
+        {
+            *f = 0.0;
+        }
+    }
+    *f = *f > 1.0 ? 1.0 : *f;
+    *f = *f < -1.0 ? 1.0 : *f;
+}
+
 void IN_Move (usercmd_t *cmd)
 {
-    if (g_WQForwardSpeed > 0.0)
-    {
-        g_WQForwardSpeed = g_WQForwardSpeed - (1.0 / 60.0f);
-        if (g_WQForwardSpeed < 0.0)
-        {
-            g_WQForwardSpeed = 0.0;
-        }
-    }
-    else if (g_WQForwardSpeed < 0.0)
-    {
-        g_WQForwardSpeed = g_WQForwardSpeed + (1.0 / 60.0f);
-        if (g_WQForwardSpeed > 0.0)
-        {
-            g_WQForwardSpeed = 0.0;
-        }
-    }
-    g_WQForwardSpeed = g_WQForwardSpeed > 1.0 ? 1.0 : g_WQForwardSpeed;
-    g_WQForwardSpeed = g_WQForwardSpeed < -1.0 ? 1.0 : g_WQForwardSpeed;
+    UpdateSpeed(&g_WQForwardSpeed);
+    UpdateSpeed(&g_WQStrafeSpeed);
 
-    if (g_WQFlags & 0x01)
+    in_forwardmove = g_WQForwardSpeed;
+    in_sidestepmove = g_WQStrafeSpeed;
+    /*if (g_WQFlags & 0x01)
     {
         in_sidestepmove = g_WQForwardSpeed;
         in_forwardmove = 0.0f;
@@ -87,7 +96,7 @@ void IN_Move (usercmd_t *cmd)
     {
         in_sidestepmove = 0.0f;
         in_forwardmove = g_WQForwardSpeed;
-    }
+    }*/
     
     if (m_filter.value)
     {

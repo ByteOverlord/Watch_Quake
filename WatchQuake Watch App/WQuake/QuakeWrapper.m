@@ -24,12 +24,10 @@ pthread_mutex_t input_lock;
 #define INPUT_INIT pthread_mutex_init(&input_lock,NULL);
 #define INPUT_LOCK pthread_mutex_lock(&input_lock);
 #define INPUT_UNLOCK pthread_mutex_unlock(&input_lock);
-//static_assert(0,"input_lock");
 #else
 #define INPUT_INIT
 #define INPUT_LOCK
 #define INPUT_UNLOCK
-static_assert(0,"no input_lock");
 #endif
 
 // Quake keys
@@ -101,6 +99,7 @@ u64 g_WQFrametimeAggregate;
 u64 g_WQLastMeasurementTimeStamp;
 
 float g_WQForwardSpeed = 0;
+float g_WQStrafeSpeed = 0;
 float g_WQTurnX = 0;
 float g_WQTurnY = 0;
 
@@ -109,9 +108,17 @@ CGPoint g_WQCurPanPoint = {0,0};
 int g_WQPanState = 0;
 int g_WQPrevPanState = 0;
 
+CGPoint g_WQSlideStart = {0,0};
+CGPoint g_WQSlidePos = {0,0};
+
 CGPoint g_WQPanEventPositions[8];
 u8 g_WQPanEventStates;
 int g_WQNumPanEvents;
+
+i16 g_WQSlideEventSpeeds[8];
+int g_WQNumSlideEvents;
+
+int g_WQPanMode;
 
 int g_WQMaxInputsPerFrame = 0;
 int g_WQInputsPerFrame = 0;
@@ -284,6 +291,8 @@ INPUT_UNLOCK
 
 void WQClerAllInputState(void)
 {
+    g_WQForwardSpeed = 0;
+    g_WQStrafeSpeed = 0;
     g_WQTurnX = 0;
     g_WQTurnY = 0;
     g_WQPlayerInput.keys = 0;
@@ -295,6 +304,11 @@ void WQClerAllInputState(void)
     memset(g_WQPanEventPositions,0,sizeof(g_WQPanEventPositions));
     g_WQPanEventStates = 0;
     g_WQNumPanEvents = 1;
+
+    memset(g_WQSlideEventSpeeds,0,sizeof(g_WQSlideEventSpeeds));
+    g_WQNumSlideEvents = 0;
+
+    g_WQPanMode = 0;
 }
 
 void WQNotifyActive(int isActive)
@@ -404,6 +418,7 @@ void WQInitGameScreen(void)
     memset(g_DataRGBA,0,maxImgSize*4);
 
     g_ColorSpaceRef = CGColorSpaceCreateDeviceRGB();
+
     g_Context = CGBitmapContextCreate(g_DataRGBA,width,height,8,width*4,g_ColorSpaceRef,kCGImageAlphaPremultipliedLast);
 }
 
@@ -679,6 +694,11 @@ void WQInit(void)
     g_WQPanEventStates = 0;
     g_WQNumPanEvents = 0;
 
+    memset(g_WQSlideEventSpeeds,0,sizeof(g_WQSlideEventSpeeds));
+    g_WQNumSlideEvents = 0;
+
+    g_WQPanMode = 0;
+
     INPUT_UNLOCK
 }
 
@@ -917,14 +937,15 @@ void WQUpdate(void)
         }
         if (g_WQPlayerInput.keys & (WQ_INPUT_NEXTWEAPON | WQ_INPUT_PREVWEAPON))
         {
-            if (g_WQPlayerInput.keys & WQ_INPUT_NEXTWEAPON)
+            WQSwitchWeaponCommand(g_WQPlayerInput.keys & WQ_INPUT_NEXTWEAPON);
+            /*if (g_WQPlayerInput.keys & WQ_INPUT_NEXTWEAPON)
             {
                 WQSwitchWeaponCommand(g_WQPlayerInput.keys & WQ_INPUT_NEXTWEAPON);
             }
             else
             {
                 g_WQFlags ^= 0x01;// toggle between strafe and forward movement.
-            }
+            }*/
         }
         if (g_WQPlayerInput.keys & WQ_INPUT_JUMP)
         {
@@ -1003,6 +1024,12 @@ void WQUpdate(void)
             }
             g_WQPanEventStates >>= 1;
         }
+        for (int i=0; i<g_WQNumSlideEvents; i++)
+        {
+            g_WQStrafeSpeed += g_WQSlideEventSpeeds[i] * (4.0f / 32767.0f);
+            g_WQStrafeSpeed = g_WQStrafeSpeed > 1.0f ? 1.0f : g_WQStrafeSpeed;
+            g_WQStrafeSpeed = g_WQStrafeSpeed < -1.0f ? -1.0f : g_WQStrafeSpeed;
+        }
     }
 
     if (g_WQPlayerInput.keys & WQ_INPUT_MENU_ENTER)
@@ -1048,6 +1075,9 @@ void WQUpdate(void)
     memset(g_WQPanEventPositions,0,sizeof(g_WQPanEventPositions));
     g_WQPanEventStates = 0;
     g_WQNumPanEvents = 0;
+
+    memset(g_WQSlideEventSpeeds,0,sizeof(g_WQSlideEventSpeeds));
+    g_WQNumSlideEvents = 0;
     
     g_WQMaxInputsPerFrame = g_WQInputsPerFrame > g_WQMaxInputsPerFrame ? g_WQInputsPerFrame : g_WQMaxInputsPerFrame;
     g_WQInputsPerFrame = 0;
@@ -1112,41 +1142,126 @@ void WQInputTapAndPan(CGPoint location, int type)
         memset(g_WQPanEventPositions,0,sizeof(g_WQPanEventPositions));
         g_WQPanEventStates = 0;
         g_WQNumPanEvents = 1;
+
+        memset(g_WQSlideEventSpeeds,0,sizeof(g_WQSlideEventSpeeds));
+        g_WQNumSlideEvents = 0;
+
+        g_WQPanMode = 0;
     }
     else
     {
+        bool addPan = g_WQPanMode <= 1;
+        CGFloat x = g_GameStats.devWidth / 2.0f;
+        CGFloat x2 = x / 2.0f;
+        x += x2;
+        CGFloat y = g_GameStats.devHeight - g_GameStats.devHeight / 10.0;
         if (type == 2)// tapping
         {
-            CGFloat x = g_GameStats.devWidth / 2.0f;
-            CGFloat x2 = x / 2.0f;
-            x += x2;
-            CGFloat y = g_GameStats.devHeight - g_GameStats.devHeight / 10.0;
             if (location.y < g_GameStats.devHeight / 10.0)// upper part of the screen
             {
                 g_WQPlayerInput.keys |= location.x > x2 ? WQ_INPUT_SWIM_UP : WQ_INPUT_SWIM_DOWN;
             }
             else if (location.y > y)// lower part of the screen, inventory
             {
-                if (location.x > x || location.x < x2)// left or right side
-                {
-                    g_WQPlayerInput.keys |= location.x > x ? WQ_INPUT_NEXTWEAPON : WQ_INPUT_PREVWEAPON;
-                    g_WQPlayerInput.keys |= location.x > x ? WQ_INPUT_MENU_RIGHT : WQ_INPUT_MENU_LEFT;
-                }
-                else // middle
-                {
-                    g_WQPlayerInput.keys |= WQ_INPUT_JUMP;
-                }
+                g_WQPlayerInput.keys |= WQ_INPUT_JUMP;
             }
             else
             {
                 g_WQPlayerInput.keys |= WQ_INPUT_MENU_ENTER;
                 g_WQPlayerInput.keys |= WQ_INPUT_FIRE;
             }
+            g_WQPanMode = 0;
+        }
+        else if (type == 1)// pan update
+        {
+            if (g_WQPanMode == 0)
+            {
+                if (location.y < g_GameStats.devHeight / 10.0)// upper part of the screen
+                {
+                    addPan = false;
+                    g_WQSlideStart.x = g_WQSlidePos.x = location.x;
+                    g_WQSlideStart.y = g_WQSlidePos.y = location.y;
+                    g_WQPanMode = 2;
+                }
+                else if (location.y > y)// lower part of the screen, inventory
+                {
+                    addPan = false;
+                    g_WQSlideStart.x = g_WQSlidePos.x = location.x;
+                    g_WQSlideStart.y = g_WQSlidePos.y = location.y;
+                    g_WQPanMode = 3;
+                }
+                else
+                {
+                    if (g_WQPanMode != 2)
+                    {
+                        g_WQPanMode = 1;
+                    }
+                }
+            }
+            else
+            {
+                if (g_WQPanMode == 1)
+                {
+                    
+                }
+                else if (g_WQPanMode == 2)
+                {
+                    addPan = false;
+                    g_WQSlidePos.x = location.x;
+                    g_WQSlidePos.y = location.y;
+                }
+                else if (g_WQPanMode == 3)
+                {
+                    addPan = false;
+                    if (g_WQNumSlideEvents < 8)
+                    {
+                        float delta = location.x - g_WQSlidePos.x;
+                        delta /= g_GameStats.devWidth;
+                        int vel = (delta * 1.0f) * 32767;
+                        vel = vel < -32767 ? -32767 : vel;
+                        vel = vel > 32767 ? 32767 : vel;
+                        g_WQSlideEventSpeeds[g_WQNumSlideEvents] = vel;
+                        ++g_WQNumSlideEvents;
+                    }
+                    g_WQSlidePos.x = location.x;
+                    g_WQSlidePos.y = location.y;
+                }
+            }
+        }
+        else if (type == 0)// pan end
+        {
+            if (g_WQPanMode == 2)// upper part of the screen
+            {
+                addPan = false;
+                float diff = location.x - g_WQSlideStart.x;
+                if (diff > 4.0)
+                {
+                    g_WQPlayerInput.keys |= WQ_INPUT_NEXTWEAPON;
+                }
+                else if (diff < -4.0)
+                {
+                    g_WQPlayerInput.keys |= WQ_INPUT_PREVWEAPON;
+                }
+            }
+            else if (g_WQPanMode == 3)// lower part of the screen, inventory
+            {
+                addPan = false;
+                float diff = location.x - g_WQSlideStart.x;
+                if (diff > 4.0)
+                {
+                    g_WQPlayerInput.keys |= WQ_INPUT_MENU_RIGHT;
+                }
+                else if (diff < -4.0)
+                {
+                    g_WQPlayerInput.keys |= WQ_INPUT_MENU_LEFT;
+                }
+            }
+            g_WQPanMode = 0;
         }
         
         // if tapping, type == 0
         // else type 0-1
-        if (g_WQNumPanEvents < 8)
+        if (addPan && g_WQNumPanEvents < 8)
         {
             g_WQPanEventPositions[g_WQNumPanEvents] = location;
             if ((type & 0x01))
