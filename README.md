@@ -39,6 +39,7 @@ Our team became highly interested in MyOwnClone's quake_watch port and immediate
 
 ## <a name="changes"></a>Changes by ByteOverlord
 
+* Swift for UI drawing, audio callback and input processing.
 * Sound Mixer separated to a second thread from the drawing pipeline to give the Mixer more time for processing.
 * “cd” audio support added. Audio file format “Mono, 22050 Hz, WAV, IMA ADPCM” preferred for lower processing and minimal space required.
 * Timer changed from “ns_timer” to “dispatch_source” (Possibly more accurate).
@@ -174,7 +175,7 @@ Ultra    | -  | -  | -  |
 ## <a name="issues"></a>Known Issues
 
 * Audio will not transmit through Bluetooth
-* Shareware version (using only PAK0) softlocks when going through a episode 2-4 portals
+* Shareware version (using only PAK0) softlocks when going through episode 2-4 portals
 * Smooth animation on, torches flicker on the edges of the view
 * R_AliasDrawModel trivial_accept disabled (Incorrect bounding box?)
 * Sound does not playback on app start (Put the game to the dock and open it from there again.)
@@ -276,7 +277,7 @@ UIKit.framework
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_06.jpg)
 
-18) Test the build first with a simulator (Series 5 Simulator or up (watchOS Simulator))
+18) Test the build first with a simulator (Series 4 Simulator or newer (watchOS Simulator))
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_06A.jpg)
 
