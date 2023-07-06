@@ -18,6 +18,7 @@ This port started from the original Quake Watch port by Tomas "MyOwnClone" Vymaz
 [**Features**](#features)  
 [**Changelog**](#changelog)  
 [**Game Size**](#size)  
+[**Battery Usage**](#battery)  
 [**Benchmark**](#benchmark)  
 [**Known Issues**](#issues)  
 [**Building Requirements**](#requirements)  
@@ -34,6 +35,8 @@ This port started from the original Quake Watch port by Tomas "MyOwnClone" Vymaz
 </p>
 
 Our team became highly interested in MyOwnClone's quake_watch port and immediately recognized the immense potential that the Apple Watch had for gaming. Upon closer examination, we realized that a few adjustments were required in terms of controls and optimizing the game to run in fullscreen mode. Our vision was to create a port that not only captured the essence of the original 1996 Quake release but also provided a gaming experience akin to a polished commercial product. This initial idea sparked the beginning of the project, and ByteOverlord enthusiastically began refining the different elements of this game port, ensuring every aspect received meticulous attention.
+
+The primary objective of this project was to demonstrate the remarkable capabilities of the Apple Watch, even when operating in software rendering mode. It served as a glimpse into the untapped potential that could be unlocked if we were granted access to the device's GPU. Just envision the possibilities that could be achieved with such resources at our disposal.
 
 ![Photo](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/WQ_Photo_2.jpg)
 
@@ -106,6 +109,30 @@ PAK1.PAK is 34,3 MB
 Music Tracks are 39,3 MB (converted with Audacity (Mono, 22050 Hz, WAV, IMA ADPCM))
 ```
 
+## <a name="battery"></a>Battery Usage
+ 
+ Usage listed as % the charge dropped during the test.
+ 
+Model  | Battery Health  | 30 min  | 60 min  |
+-------- | ------------- | ------------- | ------------- |
+S4 40mm  | -  | -  | -  |
+S4 44mm  | -  | -  | -  |
+S5 40mm  | -  | -  | -  |
+S5 44mm  | 95%  | 11%  | 28%  |
+SE (1st Gen) 40mm  | -  | -  | -  |
+SE (1st Gen) 44mm  | -  | -  | -  |
+S6 40mm  | -  | -  | -  |
+S6 44mm  | -  | -  | -  |
+S7 41mm  | -  | -  | -  |
+S7 45mm  | -  | -  | -  |
+SE (2nd Gen) 40mm  | -  | -  | -  |
+SE (2nd Gen) 44mm  | -  | -  | -  |
+S8 41mm  | -  | -  | -  |
+S8 45mm  | -  | -  | -  |
+Ultra    | -  | -  | -  |
+
+<em>Results are only indicative.</em> 
+
 ## <a name="benchmark"></a>Benchmark
 
 #### Reference table:  
@@ -174,6 +201,8 @@ Ultra    | -  | -  | -  |
 
 ## <a name="issues"></a>Known Issues
 
+* Mods are not supported
+* Player camera jumps after saving
 * Audio will not transmit through Bluetooth
 * Shareware version (using only PAK0) softlocks when going through episode 2-4 portals
 * Smooth animation on, torches flicker on the edges of the view
@@ -285,7 +314,7 @@ After building, the game will start and playback demo1.
 
 ![Simulator](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Simulator_0.png)
 
-In the game view click and hold for main menu.
+Click the game view to go to main menu.
 
 ![Simulator](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Simulator_1.png)
 
