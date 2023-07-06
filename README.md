@@ -281,6 +281,14 @@ UIKit.framework
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_06A.jpg)
 
+After building, the game will start and playback demo1.
+
+![Simulator](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Simulator_0.png)
+
+In the game view click and hold for main menu.
+
+![Simulator](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Simulator_1.png)
+
 19) After testing connect iPhone to the Mac with a cable and make sure Apple Watch has a connection to iPhone.
 
 20) Set the iPhone and Apple Watch in to "Developer" mode.
@@ -318,6 +326,8 @@ Transfer times:
 5-20 min (iPhone X & S5 44mm)  
 <1 min (iPhone 12 mini & S5 40mm)  
 <1 min (iPhone 12 mini & SE 2nd Gen 44mm)
+
+![Watch](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Watch_1.png)
 
 ## <a name="music"></a>Adding music to Watch_Quake (Optional)
 
