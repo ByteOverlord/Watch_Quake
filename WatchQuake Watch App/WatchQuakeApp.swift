@@ -10,7 +10,8 @@ import AVFoundation
 import UIKit
 
 var playbackCancelled = false
-var scheduleRunning = true
+var scheduleRunning = false
+var isGameReady = false
 
 func OnDataNeeded(avPlayer: AVAudioPlayerNode, avBuffer: AVAudioPCMBuffer, bits: uint, type: Int32)
 {
@@ -48,7 +49,8 @@ func OnDataNeeded(avPlayer: AVAudioPlayerNode, avBuffer: AVAudioPCMBuffer, bits:
     }
 }
 
-var gameMixerVolume = Float(0.1)//Float(0.25)
+//var gameMixerVolume = Float(0.1)
+var gameMixerVolume = Float(0.25)
 
 // https://stackoverflow.com/questions/57696436/swiftui-get-screen-size-in-multiplatform
 class SGConvenience{
@@ -88,6 +90,7 @@ class NotificationWrapper {
             headphonesConnected = hasHeadphones(in: session.currentRoute)
             if headphonesConnected && !hadHeadhones {
                 print("headphones connected")
+                WQNotifyHeadphoneState(1,48000,32,1,1,0)
             }
         
         case .oldDeviceUnavailable: // Old device removed.
@@ -97,6 +100,7 @@ class NotificationWrapper {
                 headphonesConnected = hasHeadphones(in: previousRoute)
                 if !headphonesConnected && hadHeadhones {
                     print("headphones disconnected")
+                    WQNotifyHeadphoneState(0,48000,32,1,1,0)
                 }
             }
         
@@ -133,10 +137,10 @@ struct WatchQuake_Watch_AppApp: App {
         let screenSize = SGConvenience.deviceScreenSize
         let sess = AVAudioSession.sharedInstance()
         try! sess.setCategory(AVAudioSession.Category.playAndRecord)
-        do
+        /*do
         {
-            //try sess.setPreferredSampleRate(44100.0)
-        }
+            try sess.setPreferredSampleRate(44100.0)
+        }*/
         try! sess.setActive(true)
 
         let pixelsPerDot = WKInterfaceDevice.current().screenScale
@@ -179,60 +183,75 @@ struct WatchQuake_Watch_AppApp: App {
         WQSetAudioFormat(Int32(outFormat.sampleRate),bits,Int32(outFormat.channelCount),outFormat.isInterleaved ? 1 : 0,type)
 
         WQInit()
-        WQSetLoop()
 
         let fbLength = AVAudioFrameCount(WQGetFrameBufferLength())
         audioPlayer = AVAudioPlayerNode()
         audioBuffer = AVAudioPCMBuffer(pcmFormat: outFormat, frameCapacity: fbLength)
         audioBuffer!.frameLength = fbLength
-        audioEngine!.attach(audioPlayer!)
-        audioEngine!.connect(audioPlayer!, to: audioMixer!, format: outFormat)
         print("stride",audioBuffer!.stride)
         print("buffersize",audioBuffer!.frameCapacity)
-
-        try! audioEngine!.start()
-        audioPlayer?.volume = gameMixerVolume
-        audioPlayer?.play()
-        OnDataNeeded(avPlayer: audioPlayer!, avBuffer: audioBuffer!, bits: uint(bits), type: type)
+    }
+    func changeGameState(newPhase : ScenePhase) {
+        if newPhase == .active {
+            if isGameReady == false {
+                print("Starting")
+                WQSetLoop()
+                isGameReady = true
+            }
+            else
+            {
+                print("Active")
+                WQNotifyActive(1)
+                WQRequestState(1)
+            }
+            audioEngine!.attach(audioPlayer!)
+            let outFormat = audioEngine!.outputNode.outputFormat(forBus: 0)
+            audioEngine!.connect(audioPlayer!, to: audioMixer!, format: outFormat)
+            try! audioEngine?.start()
+            if audioPlayer?.isPlaying == false {
+                playbackCancelled = false
+                audioPlayer?.volume = gameMixerVolume
+                audioPlayer?.play()
+                if scheduleRunning == false {
+                    print("audio callback scheduled")
+                    OnDataNeeded(avPlayer: audioPlayer!, avBuffer: audioBuffer!, bits: uint(audioBits), type: audioType)
+                }
+            }
+        } else if newPhase == .inactive {
+            print("Inactive")
+            WQNotifyActive(0)
+            if audioPlayer?.isPlaying == true {
+                audioPlayer?.volume = 0.0
+                audioPlayer?.pause()
+                playbackCancelled = true
+            }
+            if audioEngine?.isRunning == true {
+                audioEngine?.pause()
+                audioEngine?.disconnectNodeInput(audioMixer!)
+                audioEngine?.detach(audioPlayer!)
+            }
+        } else if newPhase == .background {
+            print("Background")
+            WQRequestState(0)
+        }
     }
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .onChange(of: scenePhase) { newPhase in
-                    if newPhase == .active {
-                        print("Active")
-                        WQNotifyActive(1)
-                        WQRequestState(1)
-                        audioEngine!.attach(audioPlayer!)
-                        let outFormat = audioEngine!.outputNode.outputFormat(forBus: 0)
-                        audioEngine!.connect(audioPlayer!, to: audioMixer!, format: outFormat)
-                        try! audioEngine?.start()
-                        if audioPlayer?.isPlaying == false {
-                            playbackCancelled = false
-                            audioPlayer?.volume = gameMixerVolume
-                            audioPlayer?.play()
-                            if scheduleRunning == false {
-                                print("audio callback scheduled")
-                                OnDataNeeded(avPlayer: audioPlayer!, avBuffer: audioBuffer!, bits: uint(audioBits), type: audioType)
-                            }
-                        }
-                    } else if newPhase == .inactive {
-                        print("Inactive")
-                        WQNotifyActive(0)
-                        if audioPlayer?.isPlaying == true {
-                            audioPlayer?.volume = 0.0
-                            audioPlayer?.pause()
-                            playbackCancelled = true
-                        }
-                        if audioEngine?.isRunning == true {
-                            audioEngine?.pause()
-                            audioEngine?.disconnectNodeInput(audioMixer!)
-                            audioEngine?.detach(audioPlayer!)
-                        }
-                    } else if newPhase == .background {
-                        print("Background")
-                        WQRequestState(0)
+                .onAppear(){
+                    if #available(watchOS 9.2, *) {
+                        // os 9.4
+                        // wait for ContentView .onChange(of: scenePhase)
                     }
+                    else // os 9.1, ContentView .onChange(of: scenePhase) never gets called on startup!
+                    {
+                        if isGameReady == false {
+                            changeGameState(newPhase: .active)
+                        }
+                    }
+                }
+                .onChange(of: scenePhase) { newPhase in
+                    changeGameState(newPhase: newPhase)
                 }
                 .focusable().digitalCrownRotation(detent: $scrollAmount, from:-1.0, through:1.0, by:0.1, sensitivity: .low, isContinuous: true, isHapticFeedbackEnabled: false, onChange: { (event: DigitalCrownEvent) in
                 //let s = Float($scrollAmount.wrappedValue)

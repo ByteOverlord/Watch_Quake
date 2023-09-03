@@ -330,6 +330,15 @@ INPUT_LOCK
 INPUT_UNLOCK
 }
 
+static int g_headphonesActive = 0;
+
+void WQNotifyHeadphoneState(int isActive, int Hz, uint bits, int channels, int interleaved, int type)
+{
+INPUT_LOCK
+    g_headphonesActive = isActive;
+INPUT_UNLOCK
+}
+
 void WQInputInit(WQInput_t* input)
 {
     input->vel = 0;
@@ -411,8 +420,8 @@ void WQInitGameScreen(void)
     // allocate enough space for largest supported resolution
     uint maxImgSize = 1280*960;
 
-    uint width = vid_width.value;
-    uint height = vid_height.value;
+    uint width = g_WQVidScreenWidth;//vid_width.value;
+    uint height = g_WQVidScreenHeight;//vid_height.value;
 
     g_DataRGBA = AlignedMalloc(maxImgSize*4,16);
     memset(g_DataRGBA,0,maxImgSize*4);
@@ -643,8 +652,6 @@ void WQInit(void)
     memset(statsBuffer,0,256);
 
     WQBenchmarkStats_Init(&g_BenchmarkStats);
-    //WQBenchmarkStats_Begin(&g_BenchmarkStats,4,60 * 3 + 30);
-    //WQBenchmarkStats_Begin(&g_BenchmarkStats,4,70);
 
     M_BenchmarkBegin = &WQOnBenchmarkBegin;
     M_BenchmarkClear = &WQOnBenchmarkClear;
@@ -656,27 +663,6 @@ void WQInit(void)
     g_WQFrameCounter = 0;
     g_WQFrametimeAggregate = 0;
     g_WQLastMeasurementTimeStamp = 0;
-
-    NSBundle* bundle = [NSBundle mainBundle];
-    NSString* resourceDir = bundle.resourcePath;
-    NSString* commandLine = [[NSUserDefaults standardUserDefaults] stringForKey:@"sys_commandline0"];
-    
-    if (commandLine == nil)
-    {
-        commandLine = @"";
-    }
-    resourceDir = [resourceDir stringByAppendingString:@"/id1"];
-    NSString* musicDir = [resourceDir stringByAppendingString:@"/music"];
-    NSString* saveDir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory,NSUserDomainMask,YES) objectAtIndex:0];
-    //NSString* saveDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES) objectAtIndex:0];
-    saveDir = [saveDir stringByAppendingString:@"/watchquake"];
-    CreateFolder([saveDir UTF8String]);
-    
-    CDAudio_SetPath([musicDir UTF8String]);
-    Sys_Init([resourceDir UTF8String] , [resourceDir UTF8String], [saveDir UTF8String], [commandLine UTF8String]);
-    Cvar_SetCallback(&vid_width,&VID_OnResize);
-    Cvar_SetCallback(&vid_height,&VID_OnResize);
-    Cvar_SetCallback(&scr_showfps,&WQOnChangeShowFps);
 
     WQInitGameScreen();
 
@@ -702,12 +688,41 @@ void WQInit(void)
     INPUT_UNLOCK
 }
 
+int wqLoopSet = 0;
+
 void WQSetLoop(void)
 {
-    int threads = GetHardwareConcurrency();
-    printf("hardware concurrency %i\n",threads);
-    SetGameUpdateTasks(&GameLoop,&WQAudioMixerLoop,"ge.WatchQuake.queue");
-    SetGameLoopState(1);
+    INPUT_LOCK
+    if (!wqLoopSet)
+    {
+        NSBundle* bundle = [NSBundle mainBundle];
+        NSString* resourceDir = bundle.resourcePath;
+        NSString* commandLine = [[NSUserDefaults standardUserDefaults] stringForKey:@"sys_commandline0"];
+        
+        if (commandLine == nil)
+        {
+            commandLine = @"";
+        }
+        resourceDir = [resourceDir stringByAppendingString:@"/id1"];
+        NSString* musicDir = [resourceDir stringByAppendingString:@"/music"];
+        NSString* saveDir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory,NSUserDomainMask,YES) objectAtIndex:0];
+        //NSString* saveDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES) objectAtIndex:0];
+        saveDir = [saveDir stringByAppendingString:@"/watchquake"];
+        CreateFolder([saveDir UTF8String]);
+        
+        CDAudio_SetPath([musicDir UTF8String]);
+        Sys_Init([resourceDir UTF8String] , [resourceDir UTF8String], [saveDir UTF8String], [commandLine UTF8String]);
+        Cvar_SetCallback(&vid_width,&VID_OnResize);
+        Cvar_SetCallback(&vid_height,&VID_OnResize);
+        Cvar_SetCallback(&scr_showfps,&WQOnChangeShowFps);
+        
+        int threads = GetHardwareConcurrency();
+        printf("hardware concurrency %i\n",threads);
+        SetGameUpdateTasks(&GameLoop,&WQAudioMixerLoop,"ge.WatchQuake.queue");
+        SetGameLoopState(1);
+        wqLoopSet = 1;
+    }
+    INPUT_UNLOCK
 }
 
 void WQFree(void)
@@ -852,14 +867,14 @@ void WQArrowCommand(int up)
 
 keydest_t prev_key_dest = key_menu;// key_game, key_console, key_message, key_menu
 
-int WQShowFPS()
+int WQShowFPS(void)
 {
     return Sys_ShowFPS();
 }
 
 u64 frametimeStart;
 
-void WQTick()
+void WQTick(void)
 {
     frametimeStart = GetTimeNanoSeconds();
     u64 dt = frametimeStart - prevTime;
@@ -1308,17 +1323,51 @@ void WQInputCrownRotate(float f, float delta)
     INPUT_UNLOCK
 }
 
-extern int sndDesiredSamples;
-int WQGetFrameBufferLength(void)
-{
-    return sndDesiredSamples;
-}
-
 extern int g_WQAudio_freq;
 extern int g_WQAudio_bits;
 extern int g_WQAudio_channels;
 extern int g_WQAudio_interleaved;
 extern int g_WQAudio_type;
+
+extern int sndDesiredSamples;
+
+int WQGetFrameBufferLength(void)
+{
+    // currently only handling mono sound
+    uint samples = 0;
+    uint freq = g_WQAudio_freq;
+    // 11025 -> 256  samples
+    // 22050 -> 512  samples
+    // 44100 -> 1024 samples
+    // 48000 -> 2048 samples
+    // 96000 -> 4096 samples
+    if (freq <= 11025)
+    {
+        samples = 256;
+    }
+    else if (freq <= 22050)
+    {
+        samples = 512;
+    }
+    else if (freq <= 44100)
+    {
+        samples = 1024;
+    }
+    else if (freq <= 56000)
+    {
+        samples = 2048;// 48 kHz
+    }
+    else
+    {
+        samples = 4096;// 96 kHz
+    }
+    sndDesiredSamples = samples;
+    while ((sndDesiredSamples % 16) != 0)
+    {
+        sndDesiredSamples++;
+    }
+    return sndDesiredSamples;
+}
 
 void WQSetAudioFormat(int Hz, uint bits, int channels, int interleaved, int type)
 {

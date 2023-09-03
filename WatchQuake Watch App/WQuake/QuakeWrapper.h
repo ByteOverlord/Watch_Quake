@@ -37,6 +37,7 @@ typedef struct
 
 int WQRequestState(int);
 void WQNotifyActive(int isActive);
+void WQNotifyHeadphoneState(int isActive, int Hz, uint bits, int channels, int interleaved, int type);
 void WQSetScreenSize(int width, int height, float pixelsPerDot);
 CGImageRef WQCreateGameImage(void);
 void WQInit(void);
