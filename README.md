@@ -59,7 +59,7 @@ Later port:
 * Game pausing through Swift UI when application enters background state and saves settings. Mutes audio when inactive state
 * Initial game loading fixed so that game and audio loops start after the Swift UI tells the app is active (≥ WatchOS 9.2). When content view updates the game starts (< WatchOS 9.2)
 * Touch input handling through Swift UI. Customized touch control layout for movement, camera, interaction and menu controls
-* Benchmark mode that logs average, low and high frame times. Uses the Quake’s DEMO1 and DEMO2 playbacks
+* Benchmark mode that logs average, low and high frame times. Uses the Quake’s DEMO1, DEMO2 and DEMO3 playbacks
 
 ![Photo](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/WQ_Photo_3.jpg)
 
