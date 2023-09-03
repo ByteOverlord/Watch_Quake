@@ -38,21 +38,28 @@ Our team became highly interested in MyOwnClone's quake_watch port and immediate
 
 The primary objective of this project was to demonstrate the remarkable capabilities of the Apple Watch, even when operating in software rendering mode. It served as a glimpse into the untapped potential that could be unlocked if we were granted access to the device's GPU. Just envision the possibilities that could be achieved with such resources at our disposal.
 
+Later port:  
+ Quake 2 for Apple Watch https://github.com/ByteOverlord/Watch_Quake2 03.09.2023
+
 ![Photo](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/WQ_Photo_2.jpg)
 
 ## <a name="changes"></a>Changes by ByteOverlord
 
-* Swift for UI drawing, audio callback and input processing.
-* Sound Mixer separated to a second thread from the drawing pipeline to give the Mixer more time for processing.
-* “cd” audio support added. Audio file format “Mono, 22050 Hz, WAV, IMA ADPCM” preferred for lower processing and minimal space required.
-* Timer changed from “ns_timer” to “dispatch_source” (Possibly more accurate).
-* Main menu custom texts are drawn on the fly from the original texture so no extra textures needed (Maps, Cheats).
-* Maps menu added with custom level screenshots and selectable difficulty.
-* Cheats menu added with toggles that stay active in level changes.
-* Saves game config (Options) and save games (.sav) in “Application Support” folder. Game config saves automatically when the app goes to background.
-* Resolution setting is automatic with hud, menu and console notification placements affected by resolution.
-* "Run Benchmark" mode with selectable Demo1, Demo2 and Demo3 added in the options menu.
-* DefragAllocator and DefragCache. Replaces sound cache.
+* Swift for UI drawing, audio callback and input processing
+* Sound Mixer separated to a second thread from the drawing pipeline to give the Mixer more time for processing
+* Music playback support added. Audio file format “Mono, 22050 Hz, WAV, IMA ADPCM” preferred for lower processing and minimal space required
+* Timer changed from “ns_timer” to “dispatch_source” (Possibly more accurate)
+* Main menu custom texts are drawn on the fly from the original texture so no extra textures needed (Maps, Cheats)
+* Maps menu added with custom level screenshots and selectable difficulty
+* Cheats menu added with toggles that stay active in level changes
+* Saves game config (Options) and save games (.sav) in “Application Support” folder. Game config saves automatically when the app goes to background
+* Resolution setting is automatic with hud, menu and console notification placements affected by resolution
+* "Run Benchmark" mode with selectable Demo1, Demo2 and Demo3 added in the options menu
+* DefragAllocator and DefragCache. Replaces sound cache
+* Game pausing through Swift UI when application enters background state and saves settings. Mutes audio when inactive state
+* Initial game loading fixed so that game and audio loops start after the Swift UI tells the app is active (≥ WatchOS 9.2). When content view updates the game starts (< WatchOS 9.2)
+* Touch input handling through Swift UI. Customized touch control layout for movement, camera, interaction and menu controls
+* Benchmark mode that logs average, low and high frame times. Uses the Quake’s DEMO1 and DEMO2 playbacks
 
 ![Photo](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/WQ_Photo_3.jpg)
 
@@ -77,9 +84,13 @@ The primary objective of this project was to demonstrate the remarkable capabili
 
 ## <a name="changelog"></a>Changelog
 
-**04.07.2023**
+**03.09.2023**
 
-* **<em>Controls updated for more simple layout</em>**
+* **<em>Initial game loading fixed</em>**
+
+<em>04.07.2023</em>
+
+* <em>Controls updated for more simple layout</em>
 
 <em>04.12.2022</em>
 
@@ -351,10 +362,10 @@ After the devices have restarted.
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_08.jpg)
 
 Transfer times:  
-<1 min (iPhone X & S4 40mm)  
+1 min (iPhone X & S4 40mm)  
 5-20 min (iPhone X & S5 44mm)  
-<1 min (iPhone 12 mini & S5 40mm)  
-<1 min (iPhone 12 mini & SE 2nd Gen 44mm)
+1 min (iPhone 12 mini & S5 40mm)  
+1 min (iPhone 12 mini & SE 2nd Gen 44mm)
 
 ![Watch](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Watch_1.png)
 
@@ -386,7 +397,7 @@ Transfer times:
   
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Music_Install_Guide_03.jpg)
 
-7) Place the exported audio files (track02 - track11.wav) inside the Watch Quake project:   
+7) Place the exported audio files (track02 - track11.wav) inside the WatchQuake project:   
 `“WatchQuake Watch App/Resources/id1/music/”`
 
 8) From Xcode build the Watch_Quake to the watch.  
@@ -394,10 +405,10 @@ Transfer times:
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_08.jpg)
 
 Transfer times:  
-<1 min (iPhone X & S4 40mm)  
+1 min (iPhone X & S4 40mm)  
 5-20 min (iPhone X & S5 44mm)  
-<1 min (iPhone 12 mini & S5 40mm)  
-<1 min (iPhone 12 mini & SE 2nd Gen 44mm)
+1 min (iPhone 12 mini & S5 40mm)  
+1 min (iPhone 12 mini & SE 2nd Gen 44mm)
 
 ![Photo](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/WQ_Photo_1.jpg)
 
