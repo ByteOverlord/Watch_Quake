@@ -1478,7 +1478,7 @@ void M_Options_Draw (void)
 	r = (sensitivity.value - 1)/10;
 	M_DrawSlider (220, 72, r);
 
-	M_Print (16, 80, "       CD Music Volume");
+	M_Print (16, 80, "          Music Volume");
 	r = bgmvolume.value;
 	M_DrawSlider (220, 80, r);
 
