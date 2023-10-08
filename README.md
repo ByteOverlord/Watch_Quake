@@ -84,9 +84,13 @@ Later port:
 
 ## <a name="changelog"></a>Changelog
 
-**03.09.2023**
+**08.10.2023**
 
-* **<em>Initial game loading fixed</em>**
+* **<em>Game view position fixed for watchOS 10</em>**
+
+<em>03.09.2023</em>
+
+* <em>Initial game loading fixed</em>
 
 <em>04.07.2023</em>
 
