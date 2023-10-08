@@ -237,7 +237,7 @@ struct WatchQuake_Watch_AppApp: App {
     }
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView().ignoresSafeArea()
                 .onAppear(){
                     if #available(watchOS 9.2, *) {
                         // os 9.4
