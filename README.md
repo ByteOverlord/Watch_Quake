@@ -13,7 +13,6 @@ This port started from the original Quake Watch port by Tomas "MyOwnClone" Vymaz
 
 ## Contents
 
-<h4>
 [**About**](#about)  
 [**Changes by ByteOverlord**](#changes)  
 [**Features**](#features)  
