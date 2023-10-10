@@ -13,6 +13,7 @@ This port started from the original Quake Watch port by Tomas "MyOwnClone" Vymaz
 
 ## Contents
 
+<h4>
 [**About**](#about)  
 [**Changes by ByteOverlord**](#changes)  
 [**Features**](#features)  
@@ -59,6 +60,7 @@ Later port:
 * Game pausing through Swift UI when application enters background state and saves settings. Mutes audio when inactive state
 * Initial game loading fixed so that game and audio loops start after the Swift UI tells the app is active (≥ WatchOS 9.2). When content view updates the game starts (< WatchOS 9.2)
 * Touch input handling through Swift UI. Customized touch control layout for movement, camera, interaction and menu controls
+* Touch and crown inputs can be handled at the same time. Workaround uses separate views for touch and crown inputs to enable them to register at the same time (works with watchOS 9 and 10)
 * Benchmark mode that logs average, low and high frame times. Uses the Quake’s DEMO1, DEMO2 and DEMO3 playbacks
 
 ![Photo](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/WQ_Photo_3.jpg)
@@ -76,7 +78,7 @@ Later port:
 * Position and animation interpolation
 * Music playback
 * Benchmark mode
-* Automatic native resolution (Series 4 40mm -> Ultra)
+* Automatic native resolution (Series 4 40mm -> Ultra2)
 
 ![Controls](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Menu_Controls.jpg)
 
@@ -84,9 +86,14 @@ Later port:
 
 ## <a name="changelog"></a>Changelog
 
-**08.10.2023**
+**10.10.2023**
 
-* **<em>Game view position fixed for watchOS 10</em>**
+* **<em>Touch and crown inputs now enabled at the same time (workaround found that works with watchOS 9 and 10)</em>**
+* **<em>Framework files removed from the project (remnants from WatchKit)</em>**
+
+<em>08.10.2023</em>
+
+* <em>Game view position fixed for watchOS 10</em>
 
 <em>03.09.2023</em>
 
@@ -145,6 +152,9 @@ SE (2nd Gen) 44mm  | -  | -  | -  |
 S8 41mm  | -  | -  | -  |
 S8 45mm  | -  | -  | -  |
 Ultra    | -  | -  | -  |
+S9 41mm  | -  | -  | -  |
+S9 45mm  | -  | -  | -  |
+Ultra 2    | -  | -  | -  |
 
 <em>Results are only indicative.</em> 
 
@@ -175,6 +185,9 @@ SE (2nd Gen) 44mm  | 7.35  | 2.61  | 14.98  |
 S8 41mm  | -  | -  | -  |
 S8 45mm  | -  | -  | -  |
 Ultra    | -  | -  | -  |
+S9 41mm  | -  | -  | -  |
+S9 45mm  | -  | -  | -  |
+Ultra 2    | -  | -  | -  |
 
 DEMO2  | Avg  | Low  | High  |
 -------- | ------------- | ------------- | ------------- |
@@ -193,6 +206,9 @@ SE (2nd Gen) 44mm  | 6.77  | 2.12  | 15.20  |
 S8 41mm  | -  | -  | -  |
 S8 45mm  | -  | -  | -  |
 Ultra    | -  | -  | -  |
+S9 41mm  | -  | -  | -  |
+S9 45mm  | -  | -  | -  |
+Ultra 2    | -  | -  | -  |
 
 DEMO3  | Avg  | Low  | High  |
 -------- | ------------- | ------------- | ------------- |
@@ -211,6 +227,9 @@ SE (2nd Gen) 44mm  | 7.47  | 2.06  | 14.59  |
 S8 41mm  | -  | -  | -  |
 S8 45mm  | -  | -  | -  |
 Ultra    | -  | -  | -  |
+S9 41mm  | -  | -  | -  |
+S9 45mm  | -  | -  | -  |
+Ultra 2    | -  | -  | -  |
 
 <em>Benchmarks are only indicative.</em> 
 
@@ -292,36 +311,11 @@ brew install innoextract
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_04.jpg)
 
-If the project “Frameworks” folder shows the framework texts in red continue with step 14.
-
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_05A.jpg)
-
-If the project “Frameworks” folder shows the framework texts in white jump to step 17.
-
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_05AB.jpg)
-	
-14) In WatchQuake project file go to:  
-`WatchQuake -> Targets -> WatchQuake -> Build Phases -> Link Binary With Libraries`
-
-15) Add these frameworks:
-
-```
-AVFoundation.framework
-CoreGraphics.framework
-Foundation.framework
-SwiftUI.framework
-UIKit.framework
-```
-
-![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_05B.jpg)
-
-16)  And after adding them delete the frameworks with red text.
-
-17) Check that the project is on release setting.
+14) Check that the project is on release setting.
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_06.jpg)
 
-18) Test the build first with a simulator (Series 4 Simulator or newer (watchOS Simulator))
+15) Test the build first with a simulator (Series 4 Simulator or newer (watchOS Simulator))
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_06A.jpg)
 
@@ -333,9 +327,9 @@ Click the game view to go to main menu.
 
 ![Simulator](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Simulator_1.png)
 
-19) After testing connect iPhone to the Mac with a cable and make sure Apple Watch has a connection to iPhone.
+16) After testing connect iPhone to the Mac with a cable and make sure Apple Watch has a connection to iPhone.
 
-20) Set the iPhone and Apple Watch in to "Developer" mode.
+17) Set the iPhone and Apple Watch in to "Developer" mode.
 
 On iPhone:  
 `Settings -> Privacy & Security -> Developer Mode (SECURITY) -> Developer Mode`
@@ -357,11 +351,11 @@ On Apple Watch:
 
 After the devices have restarted.  
 
-21) Select the Apple Watch as target.
+18) Select the Apple Watch as target.
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_07.jpg)
 
-22) From Xcode build the Watch_Quake to the watch.  
+19) From Xcode build the Watch_Quake to the watch.  
 
 ![Screenshot](https://github.com/ByteOverlord/Watch_Quake/raw/main/README_images/Game_Install_Guide_08.jpg)
 
