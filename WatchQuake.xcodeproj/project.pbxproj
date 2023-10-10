@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6A284192290E750100E0BEA6 /* WatchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A284191290E750100E0BEA6 /* WatchKit.framework */; };
 		6A3BC6A2290EB96E00A725D5 /* TouchEventModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3BC6A1290EB96E00A725D5 /* TouchEventModifier.swift */; };
 		6A3E44EF292B7F6F00E73677 /* DefragAllocator.c in Sources */ = {isa = PBXBuildFile; fileRef = 6A3E44EE292B7F6F00E73677 /* DefragAllocator.c */; };
 		6A47665D290D1A5C00CA9421 /* WatchQuake Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 6A47665C290D1A5C00CA9421 /* WatchQuake Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -19,11 +18,6 @@
 		6A47667A290D1B5600CA9421 /* Threading.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A476678290D1B5600CA9421 /* Threading.cpp */; };
 		6A47667D290D1B9800CA9421 /* Common.c in Sources */ = {isa = PBXBuildFile; fileRef = 6A47667C290D1B9800CA9421 /* Common.c */; };
 		6A476680290D1C3D00CA9421 /* QuakeWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A47667F290D1C3D00CA9421 /* QuakeWrapper.m */; };
-		6A476683290D1C8900CA9421 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A476682290D1C8900CA9421 /* AVFoundation.framework */; };
-		6A476685290D1C9100CA9421 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A476684290D1C9100CA9421 /* CoreGraphics.framework */; };
-		6A476687290D1C9A00CA9421 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A476686290D1C9A00CA9421 /* Foundation.framework */; };
-		6A476689290D1CA900CA9421 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A476688290D1CA900CA9421 /* SwiftUI.framework */; };
-		6A47668B290D1CB200CA9421 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A47668A290D1CB200CA9421 /* UIKit.framework */; };
 		6A4766FD290D20BD00CA9421 /* progdefs.q1 in Resources */ = {isa = PBXBuildFile; fileRef = 6A47668F290D20BD00CA9421 /* progdefs.q1 */; };
 		6A4766FE290D20BD00CA9421 /* d_polyse.c in Sources */ = {isa = PBXBuildFile; fileRef = 6A476690290D20BD00CA9421 /* d_polyse.c */; };
 		6A4766FF290D20BD00CA9421 /* r_light.c in Sources */ = {isa = PBXBuildFile; fileRef = 6A476694290D20BD00CA9421 /* r_light.c */; };
@@ -126,7 +120,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		6A284191290E750100E0BEA6 /* WatchKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WatchKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS9.0.sdk/System/Library/Frameworks/WatchKit.framework; sourceTree = DEVELOPER_DIR; };
 		6A3BC6A1290EB96E00A725D5 /* TouchEventModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchEventModifier.swift; sourceTree = "<group>"; };
 		6A3E44ED292B7F6F00E73677 /* DefragAllocator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DefragAllocator.h; sourceTree = "<group>"; };
 		6A3E44EE292B7F6F00E73677 /* DefragAllocator.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = DefragAllocator.c; sourceTree = "<group>"; };
@@ -145,11 +138,6 @@
 		6A47667C290D1B9800CA9421 /* Common.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Common.c; sourceTree = "<group>"; };
 		6A47667E290D1C3D00CA9421 /* QuakeWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuakeWrapper.h; sourceTree = "<group>"; };
 		6A47667F290D1C3D00CA9421 /* QuakeWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuakeWrapper.m; sourceTree = "<group>"; };
-		6A476682290D1C8900CA9421 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS9.0.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
-		6A476684290D1C9100CA9421 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS9.0.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
-		6A476686290D1C9A00CA9421 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS9.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		6A476688290D1CA900CA9421 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS9.0.sdk/System/Library/Frameworks/SwiftUI.framework; sourceTree = DEVELOPER_DIR; };
-		6A47668A290D1CB200CA9421 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS9.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		6A47668E290D20BD00CA9421 /* keys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = keys.h; sourceTree = "<group>"; };
 		6A47668F290D20BD00CA9421 /* progdefs.q1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = progdefs.q1; sourceTree = "<group>"; };
 		6A476690290D20BD00CA9421 /* d_polyse.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = d_polyse.c; sourceTree = "<group>"; };
@@ -269,7 +257,6 @@
 		6A47674F290D307F00CA9421 /* vid_watch.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = vid_watch.c; sourceTree = "<group>"; };
 		6A476751290D312700CA9421 /* in_watch.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = in_watch.c; sourceTree = "<group>"; };
 		6A476753290D316700CA9421 /* net_watch.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = net_watch.c; sourceTree = "<group>"; };
-		6A476758290D577000CA9421 /* WatchQuake-Watch-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "WatchQuake-Watch-App-Info.plist"; sourceTree = SOURCE_ROOT; };
 		6A613D7C29205C06001FE0CD /* mapselect */ = {isa = PBXFileReference; lastKnownFileType = folder; path = mapselect; sourceTree = "<group>"; };
 		6AB5CBCD2915C1900037E2BE /* cd_watch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cd_watch.h; sourceTree = "<group>"; };
 		6AB5CBCE2915C1900037E2BE /* cd_watch.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = cd_watch.c; sourceTree = "<group>"; };
@@ -280,12 +267,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6A476683290D1C8900CA9421 /* AVFoundation.framework in Frameworks */,
-				6A476685290D1C9100CA9421 /* CoreGraphics.framework in Frameworks */,
-				6A476687290D1C9A00CA9421 /* Foundation.framework in Frameworks */,
-				6A476689290D1CA900CA9421 /* SwiftUI.framework in Frameworks */,
-				6A47668B290D1CB200CA9421 /* UIKit.framework in Frameworks */,
-				6A284192290E750100E0BEA6 /* WatchKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,7 +278,6 @@
 			children = (
 				6A476660290D1A5C00CA9421 /* WatchQuake Watch App */,
 				6A476657290D1A5C00CA9421 /* Products */,
-				6A476681290D1C8800CA9421 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -313,15 +293,14 @@
 		6A476660290D1A5C00CA9421 /* WatchQuake Watch App */ = {
 			isa = PBXGroup;
 			children = (
-				6A476758290D577000CA9421 /* WatchQuake-Watch-App-Info.plist */,
-				6A476749290D2D1C00CA9421 /* Resources */,
-				6A47668D290D20BD00CA9421 /* id1 */,
-				6A476673290D1AD200CA9421 /* WQuake */,
 				6A476663290D1A5C00CA9421 /* ContentView.swift */,
 				6A3BC6A1290EB96E00A725D5 /* TouchEventModifier.swift */,
 				6A476661290D1A5C00CA9421 /* WatchQuakeApp.swift */,
 				6A476665290D1A5D00CA9421 /* Assets.xcassets */,
+				6A47668D290D20BD00CA9421 /* id1 */,
 				6A476667290D1A5D00CA9421 /* Preview Content */,
+				6A476749290D2D1C00CA9421 /* Resources */,
+				6A476673290D1AD200CA9421 /* WQuake */,
 			);
 			path = "WatchQuake Watch App";
 			sourceTree = "<group>";
@@ -360,19 +339,6 @@
 				6A3E44EE292B7F6F00E73677 /* DefragAllocator.c */,
 			);
 			path = WQuake;
-			sourceTree = "<group>";
-		};
-		6A476681290D1C8800CA9421 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				6A284191290E750100E0BEA6 /* WatchKit.framework */,
-				6A47668A290D1CB200CA9421 /* UIKit.framework */,
-				6A476688290D1CA900CA9421 /* SwiftUI.framework */,
-				6A476686290D1C9A00CA9421 /* Foundation.framework */,
-				6A476684290D1C9100CA9421 /* CoreGraphics.framework */,
-				6A476682290D1C8900CA9421 /* AVFoundation.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		6A47668D290D20BD00CA9421 /* id1 */ = {
@@ -815,9 +781,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"WatchQuake Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "WatchQuake-Watch-App-Info.plist";
+				INFOPLIST_FILE = "";
 				INFOPLIST_KEY_CFBundleDisplayName = WatchQuake;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
@@ -827,7 +794,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ge.WatchQuake.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = ge.WatchQuake.main.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -849,9 +816,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"WatchQuake Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "WatchQuake-Watch-App-Info.plist";
+				INFOPLIST_FILE = "";
 				INFOPLIST_KEY_CFBundleDisplayName = WatchQuake;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
@@ -861,7 +829,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ge.WatchQuake.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = ge.WatchQuake.main.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -880,9 +848,10 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_KEY_CFBundleDisplayName = WatchQuake;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ge.WatchQuake;
+				PRODUCT_BUNDLE_IDENTIFIER = ge.WatchQuake.main;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
@@ -895,9 +864,10 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_KEY_CFBundleDisplayName = WatchQuake;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ge.WatchQuake;
+				PRODUCT_BUNDLE_IDENTIFIER = ge.WatchQuake.main;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;

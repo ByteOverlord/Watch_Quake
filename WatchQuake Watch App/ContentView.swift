@@ -80,6 +80,14 @@ struct MapsOverlay: View {
     }
 }
 
+struct NullView: View {
+    init() {
+    }
+    var body: some View {
+        Text("").frame(width:0, height: 0)//.hidden()
+    }
+}
+
 struct ContentView: View {
     @State var isTapped = false
     @ObservedObject var model: Model
@@ -94,7 +102,7 @@ struct ContentView: View {
         let scale = stats.devPixelsPerDot//scaleY > scaleX ? scaleY : scaleX
         if (model.img != nil)
         {
-            let offset = CGSize(width: 0.0, height: 128.0)
+            //let offset = CGSize(width: 0.0, height: 128.0)
             Image.init(model.img, scale: Double(scale), label: Text("Game"))
                 //.scaledToFit()
                 .overlay(MapsOverlay(),alignment: .top)

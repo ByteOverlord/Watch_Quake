@@ -253,16 +253,18 @@ struct WatchQuake_Watch_AppApp: App {
                 .onChange(of: scenePhase) { newPhase in
                     changeGameState(newPhase: newPhase)
                 }
-                .focusable().digitalCrownRotation(detent: $scrollAmount, from:-1.0, through:1.0, by:0.1, sensitivity: .low, isContinuous: true, isHapticFeedbackEnabled: false, onChange: { (event: DigitalCrownEvent) in
-                //let s = Float($scrollAmount.wrappedValue)
-                    WQInputCrownRotate(Float(0.0),Float(event.velocity))
-                },onIdle: {
-                //scrollAmount = 0.0
-            }).onLongPressGesture(minimumDuration: 1.0, maximumDistance: 1, perform: {
+                .onLongPressGesture(minimumDuration: 1.0, maximumDistance: 1, perform: {
                 WQInputLongPress()
             }).onTouchDownAndPanGesture { (p:CGPoint, type:Int) in
                 WQInputTapAndPan(p,Int32(type))
             }
+            NullView()
+            .focusable().digitalCrownRotation(detent: $scrollAmount, from:-1.0, through:1.0, by:0.1, sensitivity: .low, isContinuous: true, isHapticFeedbackEnabled: false, onChange: { (event: DigitalCrownEvent) in
+                //let s = Float($scrollAmount.wrappedValue)
+                    WQInputCrownRotate(Float(0.0),Float(event.velocity))
+                },onIdle: {
+                //scrollAmount = 0.0
+            })
         }
     }
 }
